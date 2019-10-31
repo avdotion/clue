@@ -2,22 +2,32 @@
   "name": "clue",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://avdotion.github.io/clue",
   "dependencies": {
-    "@types/jest": "24.0.20",
-    "@types/node": "12.11.7",
-    "@types/react": "16.9.11",
-    "@types/react-dom": "16.9.3",
+    "crypto-es": "^1.1.1",
+    "gh-pages": "^2.1.1",
+    "normalize.css": "^8.0.1",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-scripts": "3.2.0",
-    "typescript": "3.6.4"
+    "reshadow": "0.0.1-alpha.70"
+  },
+  "devDependencies": {
+    "typescript": "3.6.4",
+    "@types/jest": "24.0.20",
+    "@types/node": "12.11.7",
+    "@types/react": "16.9.11",
+    "@types/react-dom": "16.9.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
+
   "eslintConfig": {
     "extends": "react-app"
   },
