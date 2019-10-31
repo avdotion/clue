@@ -1,18 +1,21 @@
 {
   "files": {
-    "main.css": "/clue/static/css/main.903a9919.chunk.css",
-    "main.js": "/clue/static/js/main.572102f7.chunk.js",
-    "main.js.map": "/clue/static/js/main.572102f7.chunk.js.map",
-    "runtime~main.js": "/clue/static/js/runtime~main.6f66459e.js",
-    "runtime~main.js.map": "/clue/static/js/runtime~main.6f66459e.js.map",
+    "main.js": "/clue/static/js/main.afee1266.chunk.js",
+    "main.js.map": "/clue/static/js/main.afee1266.chunk.js.map",
+    "runtime-main.js": "/clue/static/js/runtime-main.5148327e.js",
+    "runtime-main.js.map": "/clue/static/js/runtime-main.5148327e.js.map",
     "static/css/2.764ccc25.chunk.css": "/clue/static/css/2.764ccc25.chunk.css",
-    "static/js/2.7735fd30.chunk.js": "/clue/static/js/2.7735fd30.chunk.js",
-    "static/js/2.7735fd30.chunk.js.map": "/clue/static/js/2.7735fd30.chunk.js.map",
+    "static/js/2.c01c2765.chunk.js": "/clue/static/js/2.c01c2765.chunk.js",
+    "static/js/2.c01c2765.chunk.js.map": "/clue/static/js/2.c01c2765.chunk.js.map",
     "index.html": "/clue/index.html",
-    "precache-manifest.0f7c8ff0ab7f91cd749de33b75738817.js": "/clue/precache-manifest.0f7c8ff0ab7f91cd749de33b75738817.js",
+    "precache-manifest.0fc06ea10e9ed65ffb5f67a0d961c71a.js": "/clue/precache-manifest.0fc06ea10e9ed65ffb5f67a0d961c71a.js",
     "service-worker.js": "/clue/service-worker.js",
-    "static/css/2.764ccc25.chunk.css.map": "/clue/static/css/2.764ccc25.chunk.css.map",
-    "static/css/main.903a9919.chunk.css.map": "/clue/static/css/main.903a9919.chunk.css.map",
-    "static/media/AppTitle.scss": "/clue/static/media/lock_emoji.fd1a551b.png"
-  }
+    "static/css/2.764ccc25.chunk.css.map": "/clue/static/css/2.764ccc25.chunk.css.map"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.5148327e.js",
+    "static/css/2.764ccc25.chunk.css",
+    "static/js/2.c01c2765.chunk.js",
+    "static/js/main.afee1266.chunk.js"
+  ]
 }
