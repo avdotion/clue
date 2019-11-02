@@ -18,7 +18,8 @@ const defaultInputStyle = css`
     width: 100%;
     display: flex;
     overflow: hidden;
-    font-family: 'Roboto Mono', source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+    font-family: 'Roboto Mono', source-code-pro, Menlo, Monaco, Consolas,
+      'Courier New', monospace;
     font-weight: 500;
   }
 
@@ -33,7 +34,11 @@ const defaultInputStyle = css`
   }
 `;
 
-export const Input: React.FC<InputProps> = ({label, onChange, value}: InputProps) => {
+export const Input: React.FC<InputProps> = ({
+  label,
+  onChange,
+  value,
+}: InputProps) => {
   const inputElement = useRef(null);
 
   return styled(
@@ -69,7 +74,11 @@ export const Input: React.FC<InputProps> = ({label, onChange, value}: InputProps
 //   return mess;
 // };
 
-export const MasterPasswordInput: React.FC<InputProps> = ({label, onChange, value}: InputProps) => {
+export const MasterPasswordInput: React.FC<InputProps> = ({
+  label,
+  onChange,
+  value,
+}: InputProps) => {
   const inputElement = useRef(null);
 
   return styled(
@@ -93,9 +102,14 @@ export const MasterPasswordInput: React.FC<InputProps> = ({label, onChange, valu
   );
 };
 
-const transformUrl = (url: string): string => url.toLowerCase().replace(/http[s]?:\/\//g, '');
+const transformUrl = (url: string): string =>
+  url.toLowerCase().replace(/http[s]?:\/\//g, '');
 
-export const DomainNameInput: React.FC<InputProps> = ({label, onChange, value}: InputProps) => {
+export const DomainNameInput: React.FC<InputProps> = ({
+  label,
+  onChange,
+  value,
+}: InputProps) => {
   const inputElement = useRef(null);
 
   return styled(

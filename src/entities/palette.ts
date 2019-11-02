@@ -71,4 +71,4 @@ export const activatePalette = (paletteId: string) => () => {
       rootElement.style.setProperty(`--${entity}`, color);
     }
   );
-}
+};

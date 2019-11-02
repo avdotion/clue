@@ -30,15 +30,20 @@ const saltThePassword = (
   }
 
   return hashedPassword;
-}
+};
 
-export const SaltedPassword: React.FC<Props> = ({secretData, hashMethodName, isAutoCopyEnabled}: Props) => styled`
+export const SaltedPassword: React.FC<Props> = ({
+  secretData,
+  hashMethodName,
+  isAutoCopyEnabled,
+}: Props) => styled`
   |wrapper {
     height: 42px;
     width: 100%;
     background-color: var(--salted-password-color);
     color: var(--salted-password-text-color);
-    font-family: 'Roboto Mono', source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+    font-family: 'Roboto Mono', source-code-pro, Menlo, Monaco, Consolas,
+      'Courier New', monospace;
     overflow: hidden;
     border-radius: 5px;
     font-weight: 500;
@@ -52,7 +57,11 @@ export const SaltedPassword: React.FC<Props> = ({secretData, hashMethodName, isA
     <use.wrapper>
       <span>
         {
-          saltThePassword(secretData, prepareHash(hashMethodName), isAutoCopyEnabled)
+          saltThePassword(
+            secretData,
+            prepareHash(hashMethodName),
+            isAutoCopyEnabled
+          )
         }
       </span>
     </use.wrapper>
