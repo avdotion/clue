@@ -6,7 +6,8 @@ const checkBoxStyles = {
   wrapper: css`
     |wrapper {
       text-transform: uppercase;
-      font-family: 'Roboto Mono', source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+      font-family: 'Roboto Mono', source-code-pro, Menlo, Monaco, Consolas,
+        'Courier New', monospace;
       font-weight: 500;
       border-radius: 5px;
       display: inline-block;
@@ -37,8 +38,12 @@ type OptionProps = ({
   onClick: (option: string) => void,
 });
 
-const Option: React.FC<OptionProps> = ({active = false, label, onClick}: OptionProps) => styled(
-  checkBoxStyles.clickablePannel,
+const Option: React.FC<OptionProps> = ({
+  active = false,
+  label,
+  onClick,
+}: OptionProps) => styled(
+  checkBoxStyles.clickablePannel
 )`
   |pane[active] {
     cursor: default;
@@ -46,7 +51,7 @@ const Option: React.FC<OptionProps> = ({active = false, label, onClick}: OptionP
 `(
   <use.pane
     active={active}
-    onClick={() => {onClick(label)}}
+    onClick={() => { onClick(label); }}
   >
     {label}
   </use.pane>
@@ -58,7 +63,11 @@ type SliderProps = {
   onSlide: (option: string) => void,
 };
 
-export const Slider: React.FC<SliderProps> = ({options, value, onSlide}: SliderProps) => {
+export const Slider: React.FC<SliderProps> = ({
+  options,
+  value,
+  onSlide,
+}: SliderProps) => {
   return styled(
     checkBoxStyles.wrapper
   )``(
@@ -93,7 +102,7 @@ export const Trigger: React.FC<TriggerProps> = ({
   disabledAlert,
 }: TriggerProps) => styled(
   checkBoxStyles.wrapper,
-  checkBoxStyles.clickablePannel,
+  checkBoxStyles.clickablePannel
 )`
 |pane[disabled] {
   cursor: not-allowed;

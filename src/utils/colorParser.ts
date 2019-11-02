@@ -51,4 +51,4 @@ export const HSL = (h: number, s: number, l: number) => {
   }
 
   return "#" + r + g + b;
-}
+};
