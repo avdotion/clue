@@ -3,7 +3,11 @@ import React, {useState} from 'react';
 import styled, {use} from 'reshadow/macro';
 
 import {SecretData} from './entities/secretData';
-import {Input as OptionalSaltInput, DomainNameInput, MasterPasswordInput} from './widgets/input';
+import {
+  Input as OptionalSaltInput,
+  DomainNameInput,
+  MasterPasswordInput
+} from './widgets/input';
 import {Slider, Trigger} from './widgets/switch';
 import {DataVisualizationBar} from './widgets/protection-bar';
 import {SaltedPassword} from './widgets/salted-password';
@@ -36,23 +40,34 @@ const App: React.FC = () => {
   const handleSlider = (newHashMethod: string) => {
     window.localStorage.setItem('hashMethod', newHashMethod);
     setHashMethod(newHashMethod);
-  }
+  };
 
   const [isAutoCopyEnabled, triggerAutoCopy] = useState<boolean>(
     window.localStorage.getItem('isAutoCopyEnabled') === 'enabled' || false
   );
   const handleTrigger = () => {
-    window.localStorage.setItem('isAutoCopyEnabled', !isAutoCopyEnabled ? 'enabled' : 'disabled');
+    window.localStorage.setItem(
+      'isAutoCopyEnabled',
+      !isAutoCopyEnabled ? 'enabled' : 'disabled'
+    );
     triggerAutoCopy(!isAutoCopyEnabled);
     console.log(typeof isAutoCopyEnabled);
-  }
+  };
 
   useIndents();
-  const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
-  const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  const isDarkMode = window
+    .matchMedia('(prefers-color-scheme: dark)')
+    .matches;
+  const isLightMode = window
+    .matchMedia('(prefers-color-scheme: light)')
+    .matches;
 
-  window.matchMedia('(prefers-color-scheme: dark)').addListener(e => e.matches && activateDarkMode())
-  window.matchMedia('(prefers-color-scheme: light)').addListener(e => e.matches && activateLightMode())
+  window
+    .matchMedia('(prefers-color-scheme: dark)')
+    .addListener(e => e.matches && activateDarkMode());
+  window
+    .matchMedia('(prefers-color-scheme: light)')
+    .addListener(e => e.matches && activateLightMode());
 
   if (isDarkMode) {
     activateDarkMode();
@@ -64,9 +79,9 @@ const App: React.FC = () => {
   return styled`
     :global(body) {
       margin: 0;
-      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen',
-        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-        sans-serif;
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+        'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+        'Helvetica Neue', sans-serif;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       font-size: 12px;
@@ -112,7 +127,11 @@ const App: React.FC = () => {
   `(
     <div className='App'>
       <use.meta>
-        <p>Clue Password Manager  |  <a href='http://github.com/avdotion/clue' target='_blank' rel='noopener noreferrer'>Source</a></p>
+        <p>Clue Password Manager  |  <a
+          href='http://github.com/avdotion/clue'
+          target='_blank'
+          rel='noopener noreferrer'
+        >Source</a></p>
       </use.meta>
       <use.mainframe>
         <use.field>
@@ -165,7 +184,7 @@ const App: React.FC = () => {
         </use.field>
       </use.mainframe>
     </div>
-  )
+  );
 };
 
 export default App;

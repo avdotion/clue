@@ -5,7 +5,6 @@
   "homepage": "https://avdotion.github.io/clue",
   "dependencies": {
     "crypto-es": "^1.1.1",
-    "gh-pages": "^2.1.1",
     "normalize.css": "^8.0.1",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
@@ -17,7 +16,10 @@
     "@types/jest": "24.0.20",
     "@types/node": "12.11.7",
     "@types/react": "16.9.11",
-    "@types/react-dom": "16.9.3"
+    "@types/react-dom": "16.9.3",
+    "husky": "^3.0.9",
+    "lint-staged": "^9.4.2",
+    "gh-pages": "^2.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -27,9 +29,26 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app"
+    ],
+    "rules": {
+      "object-curly-spacing": [
+        "error",
+        "never"
+      ],
+      "semi": [
+        "error",
+        "always"
+      ],
+      "max-len": [
+        "error",
+        {
+          "code": 80
+        }
+      ]
+    }
   },
   "browserslist": {
     "production": [
@@ -42,5 +61,16 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json}": [
+      "./node_modules/.bin/eslint",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }
