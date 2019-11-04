@@ -16,8 +16,6 @@ import {useIndents} from './entities/indents';
 import {activatePalette} from './entities/palette';
 import {HASH_FUNCTIONS, DEFAULT_HASH_FUNCTION} from './utils/crypto';
 
-const activateDarkMode = activatePalette('dark');
-const activateLightMode = activatePalette('light');
 const HASH_METHODS = Object.keys(HASH_FUNCTIONS);
 
 const App: React.FC = () => {
@@ -33,6 +31,27 @@ const App: React.FC = () => {
       [field]: newValue,
     });
   };
+
+  const [colorScheme, setColorScheme] = useState<string>((() => {
+    const isDarkMode = window
+      .matchMedia('(prefers-color-scheme: dark)')
+      .matches;
+
+    if (isDarkMode) {
+      return 'dark';
+    }
+
+    // Light colorScheme is used by default
+    return 'light';
+  })());
+
+  window.matchMedia('(prefers-color-scheme: dark)').addListener(
+    e => e.matches && setColorScheme('dark')
+  );
+
+  window.matchMedia('(prefers-color-scheme: light)').addListener(
+    e => e.matches && setColorScheme('light')
+  );
 
   const [hashMethod, setHashMethod] = useState<string>(
     window.localStorage.getItem('hashMethod') || DEFAULT_HASH_FUNCTION
@@ -55,26 +74,7 @@ const App: React.FC = () => {
   };
 
   useIndents();
-  const isDarkMode = window
-    .matchMedia('(prefers-color-scheme: dark)')
-    .matches;
-  const isLightMode = window
-    .matchMedia('(prefers-color-scheme: light)')
-    .matches;
-
-  window
-    .matchMedia('(prefers-color-scheme: dark)')
-    .addListener(e => e.matches && activateDarkMode());
-  window
-    .matchMedia('(prefers-color-scheme: light)')
-    .addListener(e => e.matches && activateLightMode());
-
-  if (isDarkMode) {
-    activateDarkMode();
-  }
-  if (isLightMode) {
-    activateLightMode();
-  }
+  activatePalette(colorScheme);
 
   return styled`
     :global(body) {
