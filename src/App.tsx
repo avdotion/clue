@@ -99,19 +99,36 @@ const App: React.FC = () => {
       text-decoration: none;
     }
 
-    :global(#root) {
+    |fullFrameLayout {
+      min-height: 100vh;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
+    }
+
+    |container {
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    @media only screen and (min-width: 440px)  {
+      |container {
+        max-width: 340px;
+      }
     }
 
     |mainframe {
-      max-width: 340px;
       width: 100%;
       background-color: var(--mainframe-color);
       padding: var(--indent5);
-      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    @media only screen and (min-width: 440px)  {
+      |mainframe {
+        border-radius: 4px;
+      }
     }
 
     |field {
@@ -125,65 +142,67 @@ const App: React.FC = () => {
       margin: 0;
     }
   `(
-    <div className='App'>
-      <use.meta>
-        <p>Clue Password Manager  |  <a
-          href='http://github.com/avdotion/clue'
-          target='_blank'
-          rel='noopener noreferrer'
-        >Source</a></p>
-      </use.meta>
-      <use.mainframe>
-        <use.field>
-          <MasterPasswordInput
-            label='Master Password'
-            value={secretData.masterPassword}
-            onChange={handleInput('masterPassword')}
-          />
-        </use.field>
-        <use.field>
-          <DomainNameInput
-            label='Domain Name'
-            value={secretData.domainName}
-            onChange={handleInput('domainName')}
+    <use.fullFrameLayout>
+      <use.container>
+        <use.meta>
+          <p>Clue Password Manager  |  <a
+            href='http://github.com/avdotion/clue'
+            target='_blank'
+            rel='noopener noreferrer'
+          >Source</a></p>
+        </use.meta>
+        <use.mainframe>
+          <use.field>
+            <MasterPasswordInput
+              label='Master Password'
+              value={secretData.masterPassword}
+              onChange={handleInput('masterPassword')}
             />
-        </use.field>
-        <use.field>
-          <OptionalSaltInput
-            label='Salt (optional)'
-            value={secretData.optionalSalt}
-            onChange={handleInput('optionalSalt')}
-          />
-        </use.field>
-        <use.field>
-          <Slider
-            options={HASH_METHODS}
-            value={hashMethod}
-            onSlide={handleSlider}
-          />
-          <Trigger
-            label={'autocopy'}
-            disabled={Boolean(!navigator.clipboard)}
-            disabledAlert={'AutoCopy isn\'t supported by this browser'}
-            active={isAutoCopyEnabled}
-            // @ts-ignore
-            onTrigger={handleTrigger}
-          />
-        </use.field>
-        <use.field>
-          <DataVisualizationBar
-            secretData={secretData}
-          />
-        </use.field>
-        <use.field>
-          <SaltedPassword
-            secretData={secretData}
-            hashMethodName={hashMethod}
-            isAutoCopyEnabled={isAutoCopyEnabled}
-          />
-        </use.field>
-      </use.mainframe>
-    </div>
+          </use.field>
+          <use.field>
+            <DomainNameInput
+              label='Domain Name'
+              value={secretData.domainName}
+              onChange={handleInput('domainName')}
+              />
+          </use.field>
+          <use.field>
+            <OptionalSaltInput
+              label='Salt (optional)'
+              value={secretData.optionalSalt}
+              onChange={handleInput('optionalSalt')}
+            />
+          </use.field>
+          <use.field>
+            <Slider
+              options={HASH_METHODS}
+              value={hashMethod}
+              onSlide={handleSlider}
+            />
+            <Trigger
+              label={'autocopy'}
+              disabled={Boolean(!navigator.clipboard)}
+              disabledAlert={'AutoCopy isn\'t supported by this browser'}
+              active={isAutoCopyEnabled}
+              // @ts-ignore
+              onTrigger={handleTrigger}
+            />
+          </use.field>
+          <use.field>
+            <DataVisualizationBar
+              secretData={secretData}
+            />
+          </use.field>
+          <use.field>
+            <SaltedPassword
+              secretData={secretData}
+              hashMethodName={hashMethod}
+              isAutoCopyEnabled={isAutoCopyEnabled}
+            />
+          </use.field>
+        </use.mainframe>
+      </use.container>
+    </use.fullFrameLayout>
   );
 };
 

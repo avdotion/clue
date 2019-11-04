@@ -14,6 +14,7 @@ const checkBoxStyles = {
       cursor: pointer;
       background-color: var(--slider-default-color);
       user-select: none;
+      margin-bottom: var(--indent4);
     }
   `,
   clickablePannel: css`
