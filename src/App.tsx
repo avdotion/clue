@@ -16,8 +16,6 @@ import {useIndents} from './entities/indents';
 import {activatePalette} from './entities/palette';
 import {HASH_FUNCTIONS, DEFAULT_HASH_FUNCTION} from './utils/crypto';
 
-const activateDarkMode = activatePalette('dark');
-const activateLightMode = activatePalette('light');
 const HASH_METHODS = Object.keys(HASH_FUNCTIONS);
 
 const App: React.FC = () => {
@@ -33,6 +31,27 @@ const App: React.FC = () => {
       [field]: newValue,
     });
   };
+
+  const [colorScheme, setColorScheme] = useState<string>((() => {
+    const isDarkMode = window
+      .matchMedia('(prefers-color-scheme: dark)')
+      .matches;
+
+    if (isDarkMode) {
+      return 'dark';
+    }
+
+    // Light colorScheme is used by default
+    return 'light';
+  })());
+
+  window.matchMedia('(prefers-color-scheme: dark)').addListener(
+    e => e.matches && setColorScheme('dark')
+  );
+
+  window.matchMedia('(prefers-color-scheme: light)').addListener(
+    e => e.matches && setColorScheme('light')
+  );
 
   const [hashMethod, setHashMethod] = useState<string>(
     window.localStorage.getItem('hashMethod') || DEFAULT_HASH_FUNCTION
@@ -55,26 +74,7 @@ const App: React.FC = () => {
   };
 
   useIndents();
-  const isDarkMode = window
-    .matchMedia('(prefers-color-scheme: dark)')
-    .matches;
-  const isLightMode = window
-    .matchMedia('(prefers-color-scheme: light)')
-    .matches;
-
-  window
-    .matchMedia('(prefers-color-scheme: dark)')
-    .addListener(e => e.matches && activateDarkMode());
-  window
-    .matchMedia('(prefers-color-scheme: light)')
-    .addListener(e => e.matches && activateLightMode());
-
-  if (isDarkMode) {
-    activateDarkMode();
-  }
-  if (isLightMode) {
-    activateLightMode();
-  }
+  activatePalette(colorScheme);
 
   return styled`
     :global(body) {
@@ -99,19 +99,36 @@ const App: React.FC = () => {
       text-decoration: none;
     }
 
-    :global(#root) {
+    |fullFrameLayout {
+      min-height: 100vh;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
+    }
+
+    |container {
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    @media only screen and (min-width: 440px)  {
+      |container {
+        max-width: 340px;
+      }
     }
 
     |mainframe {
-      max-width: 340px;
       width: 100%;
       background-color: var(--mainframe-color);
       padding: var(--indent5);
-      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    @media only screen and (min-width: 440px)  {
+      |mainframe {
+        border-radius: 4px;
+      }
     }
 
     |field {
@@ -125,65 +142,67 @@ const App: React.FC = () => {
       margin: 0;
     }
   `(
-    <div className='App'>
-      <use.meta>
-        <p>Clue Password Manager  |  <a
-          href='http://github.com/avdotion/clue'
-          target='_blank'
-          rel='noopener noreferrer'
-        >Source</a></p>
-      </use.meta>
-      <use.mainframe>
-        <use.field>
-          <MasterPasswordInput
-            label='Master Password'
-            value={secretData.masterPassword}
-            onChange={handleInput('masterPassword')}
-          />
-        </use.field>
-        <use.field>
-          <DomainNameInput
-            label='Domain Name'
-            value={secretData.domainName}
-            onChange={handleInput('domainName')}
+    <use.fullFrameLayout>
+      <use.container>
+        <use.meta>
+          <p>Clue Password Manager  |  <a
+            href='http://github.com/avdotion/clue'
+            target='_blank'
+            rel='noopener noreferrer'
+          >Source</a></p>
+        </use.meta>
+        <use.mainframe>
+          <use.field>
+            <MasterPasswordInput
+              label='Master Password'
+              value={secretData.masterPassword}
+              onChange={handleInput('masterPassword')}
             />
-        </use.field>
-        <use.field>
-          <OptionalSaltInput
-            label='Salt (optional)'
-            value={secretData.optionalSalt}
-            onChange={handleInput('optionalSalt')}
-          />
-        </use.field>
-        <use.field>
-          <Slider
-            options={HASH_METHODS}
-            value={hashMethod}
-            onSlide={handleSlider}
-          />
-          <Trigger
-            label={'autocopy'}
-            disabled={Boolean(!navigator.clipboard)}
-            disabledAlert={'AutoCopy isn\'t supported by this browser'}
-            active={isAutoCopyEnabled}
-            // @ts-ignore
-            onTrigger={handleTrigger}
-          />
-        </use.field>
-        <use.field>
-          <DataVisualizationBar
-            secretData={secretData}
-          />
-        </use.field>
-        <use.field>
-          <SaltedPassword
-            secretData={secretData}
-            hashMethodName={hashMethod}
-            isAutoCopyEnabled={isAutoCopyEnabled}
-          />
-        </use.field>
-      </use.mainframe>
-    </div>
+          </use.field>
+          <use.field>
+            <DomainNameInput
+              label='Domain Name'
+              value={secretData.domainName}
+              onChange={handleInput('domainName')}
+              />
+          </use.field>
+          <use.field>
+            <OptionalSaltInput
+              label='Salt (optional)'
+              value={secretData.optionalSalt}
+              onChange={handleInput('optionalSalt')}
+            />
+          </use.field>
+          <use.field>
+            <Slider
+              options={HASH_METHODS}
+              value={hashMethod}
+              onSlide={handleSlider}
+            />
+            <Trigger
+              label={'autocopy'}
+              disabled={Boolean(!navigator.clipboard)}
+              disabledAlert={'AutoCopy isn\'t supported by this browser'}
+              active={isAutoCopyEnabled}
+              // @ts-ignore
+              onTrigger={handleTrigger}
+            />
+          </use.field>
+          <use.field>
+            <DataVisualizationBar
+              secretData={secretData}
+            />
+          </use.field>
+          <use.field>
+            <SaltedPassword
+              secretData={secretData}
+              hashMethodName={hashMethod}
+              isAutoCopyEnabled={isAutoCopyEnabled}
+            />
+          </use.field>
+        </use.mainframe>
+      </use.container>
+    </use.fullFrameLayout>
   );
 };
 

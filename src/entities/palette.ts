@@ -61,7 +61,7 @@ const COLOR_PALETTE = {
 
 const rootElement = document.querySelector(':root');
 
-export const activatePalette = (paletteId: string) => () => {
+export const activatePalette = (paletteId: string) => {
   Object.entries(COLOR_PALETTE).forEach(
     ([entity, paletteIds]) => {
       // TODO
