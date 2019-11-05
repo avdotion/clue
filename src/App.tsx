@@ -1,80 +1,46 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 // @ts-ignore
-import styled, {use} from 'reshadow/macro';
+import styled, {use, css} from 'reshadow/macro';
 
-import {SecretData} from './entities/secretData';
 import {
   Input as OptionalSaltInput,
   DomainNameInput,
   MasterPasswordInput,
-} from './widgets/input';
+  SaltedPassword,
+} from './widgets/textboxes';
 import {Slider, Trigger} from './widgets/switch';
 import {DataVisualizationBar} from './widgets/protection-bar';
-import {SaltedPassword} from './widgets/salted-password';
+import {Section} from './widgets/layout';
 
-import {useIndents} from './entities/indents';
+import {activateIndents} from './entities/indents';
 import {activatePalette} from './entities/palette';
-import {HASH_FUNCTIONS, DEFAULT_HASH_FUNCTION} from './utils/crypto';
 
+import {HASH_FUNCTIONS, DEFAULT_HASH_FUNCTION} from './utils/crypto';
 const HASH_METHODS = Object.keys(HASH_FUNCTIONS);
 
-const App: React.FC = () => {
-  const [secretData, patchSecretData] = useState<SecretData>({
-    masterPassword: '',
-    domainName: '',
-    optionalSalt: '',
-  });
-
-  const handleInput = (field: string) => (newValue: string) => {
-    patchSecretData({
-      ...secretData,
-      [field]: newValue,
-    });
-  };
-
-  const [colorScheme, setColorScheme] = useState<string>((() => {
-    const isDarkMode = window
-      .matchMedia('(prefers-color-scheme: dark)')
-      .matches;
-
-    if (isDarkMode) {
-      return 'dark';
-    }
-
-    // Light colorScheme is used by default
-    return 'light';
-  })());
-
-  window.matchMedia('(prefers-color-scheme: dark)').addListener(
-    e => e.matches && setColorScheme('dark')
-  );
-
-  window.matchMedia('(prefers-color-scheme: light)').addListener(
-    e => e.matches && setColorScheme('light')
-  );
+export const App: React.FC = () => {
+  const [masterPassword, setMasterPassword] = useState<string>('');
+  const [domainName, setDomainName] = useState<string>('');
+  const [optionalSalt, setOptionalSalt] = useState<string>('');
 
   const [hashMethod, setHashMethod] = useState<string>(
-    window.localStorage.getItem('hashMethod') || DEFAULT_HASH_FUNCTION
+    localStorage.getItem('hashMethod') || DEFAULT_HASH_FUNCTION
   );
-  const handleSlider = (newHashMethod: string) => {
-    window.localStorage.setItem('hashMethod', newHashMethod);
-    setHashMethod(newHashMethod);
-  };
+  useEffect(() => { localStorage.setItem('hashMethod', hashMethod); });
 
-  const [isAutoCopyEnabled, triggerAutoCopy] = useState<boolean>(
-    window.localStorage.getItem('isAutoCopyEnabled') === 'enabled' || false
+  const [DISABLED, ENABLED] = ['DISABLED', 'ENABLED'];
+  const toStorable = (flag: boolean): string => flag ? ENABLED : DISABLED;
+  const [isAutoCopyEnabled, setAutoCopy] = useState<boolean>(
+    localStorage.getItem('autoCopy') === ENABLED || false
   );
-  const handleTrigger = () => {
-    window.localStorage.setItem(
-      'isAutoCopyEnabled',
-      !isAutoCopyEnabled ? 'enabled' : 'disabled'
-    );
-    triggerAutoCopy(!isAutoCopyEnabled);
-    console.log(typeof isAutoCopyEnabled);
-  };
+  useEffect(() => {
+    localStorage.setItem('autoCopy', toStorable(isAutoCopyEnabled));
+  });
 
-  useIndents();
+  const colorScheme = useDayLightTheme();
   activatePalette(colorScheme);
+
+  activateIndents();
 
   return styled`
     :global(body) {
@@ -130,17 +96,6 @@ const App: React.FC = () => {
         border-radius: 4px;
       }
     }
-
-    |field {
-      margin-bottom: var(--indent5);
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-    }
-
-    |field:last-child {
-      margin: 0;
-    }
   `(
     <use.fullFrameLayout>
       <use.container>
@@ -152,58 +107,78 @@ const App: React.FC = () => {
           >Source</a></p>
         </use.meta>
         <use.mainframe>
-          <use.field>
+          <Section title='Master Password'>
             <MasterPasswordInput
-              label='Master Password'
-              value={secretData.masterPassword}
-              onChange={handleInput('masterPassword')}
+              value={masterPassword}
+              onChange={(newValue: string) => { setMasterPassword(newValue); }}
             />
-          </use.field>
-          <use.field>
+          </Section>
+          <Section title='Domain Name'>
             <DomainNameInput
-              label='Domain Name'
-              value={secretData.domainName}
-              onChange={handleInput('domainName')}
-              />
-          </use.field>
-          <use.field>
-            <OptionalSaltInput
-              label='Salt (optional)'
-              value={secretData.optionalSalt}
-              onChange={handleInput('optionalSalt')}
+              value={domainName}
+              onChange={(newValue: string) => { setDomainName(newValue); }}
             />
-          </use.field>
-          <use.field>
+          </Section>
+          <Section title='Salt (optional)'>
+            <OptionalSaltInput
+              value={optionalSalt}
+              onChange={(newValue: string) => { setOptionalSalt(newValue); }}
+            />
+          </Section>
+          <Section>
             <Slider
               options={HASH_METHODS}
               value={hashMethod}
-              onSlide={handleSlider}
+              onSlide={(newValue: string) => { setHashMethod(newValue); }}
             />
             <Trigger
               label={'autocopy'}
               disabled={Boolean(!navigator.clipboard)}
               disabledAlert={'AutoCopy isn\'t supported by this browser'}
               active={isAutoCopyEnabled}
-              // @ts-ignore
-              onTrigger={handleTrigger}
+              onTrigger={(newValue) => { setAutoCopy(newValue); }}
             />
-          </use.field>
-          <use.field>
+          </Section>
+          <Section>
             <DataVisualizationBar
-              secretData={secretData}
+              secretData={{masterPassword, domainName, optionalSalt}}
             />
-          </use.field>
-          <use.field>
+          </Section>
+          <Section
+            title='Salted Password'
+            style={css`
+              section {
+                margin-bottom: 0;
+              }
+            `}
+          >
             <SaltedPassword
-              secretData={secretData}
+              secretData={{masterPassword, domainName, optionalSalt}}
               hashMethodName={hashMethod}
               isAutoCopyEnabled={isAutoCopyEnabled}
             />
-          </use.field>
+          </Section>
         </use.mainframe>
       </use.container>
     </use.fullFrameLayout>
   );
 };
 
-export default App;
+const useDayLightTheme = () => {
+  const isNightTime = matchMedia('(prefers-color-scheme: dark)').matches;
+  const [theme, setTheme] = useState<'dark' | 'light'>(
+    isNightTime ? 'dark' : 'light'
+  );
+
+  useEffect(() => {
+    matchMedia('(prefers-color-scheme: dark)').addListener(
+      e => e.matches && setTheme('dark')
+    );
+
+    matchMedia('(prefers-color-scheme: light)').addListener(
+      e => e.matches && setTheme('light')
+    );
+  });
+
+  return theme;
+};

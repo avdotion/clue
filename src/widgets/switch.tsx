@@ -92,7 +92,7 @@ type TriggerProps = {
   disabledAlert: string,
   label: string,
   active: boolean,
-  onTrigger: () => void,
+  onTrigger: (value: boolean) => void,
 };
 
 export const Trigger: React.FC<TriggerProps> = ({
@@ -113,7 +113,7 @@ export const Trigger: React.FC<TriggerProps> = ({
     <use.pane
       active={active && !disabled}
       disabled={disabled}
-      onClick={() => { !disabled && onTrigger(); }}
+      onClick={() => { !disabled && onTrigger(!active); }}
       title={disabled ? disabledAlert : ''}
     >
       {active ? label + ' Enabled' : label + ' Disabled'}
