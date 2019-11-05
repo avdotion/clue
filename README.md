@@ -12,20 +12,21 @@ Major rules in this project:
 
 ## TODO
 
-* [ ] Fix client error with `active` key
-* [ ] Grow typing coverage
+* [ ]  Fix client error with `active` key
 * [ ] Obfuscate entering Master Password during typing and show not only circle characters (nevertheless hash real non-obfuscate Master Password value)
-* [ ] Envolve better support for mobile screens
 * [ ] Envolve transitions and speed up all animations (make slider 60 fps gliding)
 * [ ] Envolve accessibility attributes and analyze for the contrast of current colour schemes
 * [ ] Restrict to left the last `/` character in Domain Name field
 * [ ] Make async helper for typing Domain Name
-* [ ] Bring eslint linting
-* [ ] Refactor `inputs.ts` (decompose)
-* [ ] Enforce neccesity of eslint and typing checks before commiting
 * [ ] Make standalone app non-resizible
 * [ ] Add Safari favicon
 * [ ] Update standalone app icon to look like a typical macOS application
+* [ ] Envolve tests
+* [ ] Make emoji-field more safe (the literal 'salt' is not ok)
+* [x] Envolve better support for mobile screens
+* [x] Bring eslint linting
+* [x] Refactor `inputs.ts` (decompose)
+* [x] Enforce neccesity of eslint and typing checks before commiting
 
 ## Building the application
 
