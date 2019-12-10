@@ -1,8 +1,7 @@
 import React from 'react';
 // @ts-ignore
 import styled, {use, css} from 'reshadow/macro';
-
-// TODO: написать расчет расстояния перемещения для слайдера
+import INDENTS from '../entities/indents';
 
 const checkBoxStyles = {
   wrapper: css`
@@ -74,7 +73,7 @@ const switchStyle = {
       color: var(--slider-active-text-color);
     }
   `,
-}
+};
 
 type OptionProps = ({
   label: string,
@@ -99,34 +98,41 @@ const Option: React.FC<OptionProps> = ({
 
 type SelectorProps = {
   label: string,
-  left: number,
+  left: any,
 };
 
 const Selector: React.FC<SelectorProps> = ({
   label,
   left,
-}: SelectorProps) =>{
-  console.log(left)
-  return styled(switchStyle.switch
+}: SelectorProps) =>styled(switchStyle.switch
     )`
-      |selector[a=MD5]{
-        left: 0;
-      }
-
-      |selector[a=SHA3]{
-        left: 53px;
+      |selector{
+        left: ${left};
       }
     `(
-    <use.selector a={label}>
+    <use.selector>
       {label}
     </use.selector>
   );
-};
 
 type SliderProps = {
   value: string,
   options: string[],
   onSlide: (option: string) => void,
+};
+
+
+// @ts-ignore
+const calc_width = (value: string, options: string[]) => {
+  const ligature_width = 7;
+  let result = 0;
+  for (let item of options) {
+    if (value === item) {
+      return `${result}px`;
+    } else {
+      result += item.length * ligature_width + INDENTS[3] * 2;
+    }
+  }
 };
 
 export const Slider: React.FC<SliderProps> = ({
@@ -144,7 +150,7 @@ export const Slider: React.FC<SliderProps> = ({
           onClick={onSlide}
         />
       )}
-      <Selector label={value} left={1}/>
+      <Selector label={value} left={calc_width(value, options)}/>
     </use.switch>
   );
 
