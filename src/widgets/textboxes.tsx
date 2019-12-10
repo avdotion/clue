@@ -43,6 +43,11 @@ const InnerInput = React.forwardRef<{
     align-items: center;
     width: 100%;
   }
+
+  input[type='password'] {
+    color: transparent;
+    z-index: 1;
+  }
 `(
   <input
     type={type}
@@ -78,6 +83,15 @@ export const Input: React.FC<InputProps> = ({
   );
 };
 
+const getRandomText = (length: number) => {
+  const literals = ['@', '%', '$', '#', '!', '&', '?'];
+  let result = '';
+  for (let i=0; i < length; i++) {
+    result += literals[Math.floor(Math.random()*literals.length)];;
+  }
+  return result;
+};
+
 export const MasterPasswordInput: React.FC<InputProps> = ({
   onChange,
   value,
@@ -86,7 +100,21 @@ export const MasterPasswordInput: React.FC<InputProps> = ({
 
   return styled(
     defaultTextBoxStyle
-  )(
+  )`
+    |text_area{
+      line-height: 1.6em;
+      outline: none;
+      background-color: none;
+      border: 0;
+      color: var(--input-default-text-color);
+      align-items: center;
+      height: 1.6em;
+      position: absolute;
+      user-select: none;
+      pointer-events: none;
+      z-index: 0;
+    }
+  `(
     <use.wrapper onClick={() => {
         inputElement.current && inputElement.current.focus();
       }}>
@@ -99,6 +127,9 @@ export const MasterPasswordInput: React.FC<InputProps> = ({
           ref={inputElement}
         />
       }
+      <use.text_area>
+        {getRandomText(value.length)}
+      </use.text_area>
     </use.wrapper>
   );
 };
