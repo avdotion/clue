@@ -46,6 +46,7 @@ const InnerInput = React.forwardRef<{
 
   input[type='password'] {
     color: transparent;
+    caret-color: var(--input-default-text-color);
     z-index: 1;
   }
 `(
@@ -108,6 +109,7 @@ export const MasterPasswordInput: React.FC<InputProps> = ({
       border: 0;
       color: var(--input-default-text-color);
       align-items: center;
+      width: 100%;
       height: 1.6em;
       position: absolute;
       user-select: none;
@@ -128,7 +130,7 @@ export const MasterPasswordInput: React.FC<InputProps> = ({
         />
       }
       <use.text_area>
-        {getRandomText(value.length)}
+        {getRandomText((value.length < 38) ? value.length : 37)}
       </use.text_area>
     </use.wrapper>
   );
