@@ -84,14 +84,26 @@ export const Input: React.FC<InputProps> = ({
   );
 };
 
-const getRandomText = (length: number) => {
+const makeGetRandomText = () => {
   const literals = ['@', '%', '$', '#', '!', '&', '?'];
-  let result = '';
-  for (let i=0; i < length; i++) {
-    result += literals[Math.floor(Math.random()*literals.length)];;
-  }
-  return result;
+  let prevValue: string;
+  let prevResult: string;
+  return (value: string) => {
+    if (value == prevValue) {
+      return prevResult;
+    } else {
+      let result = '';
+      for (let i=0; i < value.length; i++) {
+        result += literals[Math.floor(Math.random()*literals.length)];;
+      }
+      prevValue = value;
+      prevResult = result;
+      return result;
+    }
+  };
 };
+
+const getRandomText = makeGetRandomText();
 
 export const MasterPasswordInput: React.FC<InputProps> = ({
   onChange,
@@ -130,7 +142,7 @@ export const MasterPasswordInput: React.FC<InputProps> = ({
         />
       }
       <use.text_area>
-        {getRandomText((value.length < 38) ? value.length : 37)}
+        {getRandomText(value)}
       </use.text_area>
     </use.wrapper>
   );
