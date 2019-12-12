@@ -1,5 +1,5 @@
 export type SecretData = {
   masterPassword: string,
-  domainName: string,
+  clearDomainName: string,
   optionalSalt: string,
 };

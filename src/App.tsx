@@ -18,6 +18,13 @@ import {activatePalette} from './entities/palette';
 import {HASH_FUNCTIONS, DEFAULT_HASH_FUNCTION} from './utils/crypto';
 const HASH_METHODS = Object.keys(HASH_FUNCTIONS);
 
+const checkDomainName = (value: string) => {
+  while (value[value.length - 1] === '/') {
+    value = value.slice(0, value.length - 1);
+  }
+  return value;
+};
+
 export const App: React.FC = () => {
   const [masterPassword, setMasterPassword] = useState<string>('');
   const [domainName, setDomainName] = useState<string>('');
@@ -41,6 +48,8 @@ export const App: React.FC = () => {
   activatePalette(colorScheme);
 
   activateIndents();
+
+  const clearDomainName: string = checkDomainName(domainName);
 
   return styled`
     :global(body) {
@@ -141,7 +150,7 @@ export const App: React.FC = () => {
           </Section>
           <Section>
             <DataVisualizationBar
-              secretData={{masterPassword, domainName, optionalSalt}}
+              secretData={{masterPassword, clearDomainName, optionalSalt}}
             />
           </Section>
           <Section
@@ -153,7 +162,7 @@ export const App: React.FC = () => {
             `}
           >
             <SaltedPassword
-              secretData={{masterPassword, domainName, optionalSalt}}
+              secretData={{masterPassword, clearDomainName, optionalSalt}}
               hashMethodName={hashMethod}
               isAutoCopyEnabled={isAutoCopyEnabled}
             />

@@ -85,15 +85,16 @@ export const Input: React.FC<InputProps> = ({
 };
 
 const makeGetRandomText = () => {
-  const literals = ['@', '%', '$', '#', '!', '&', '?'];
+  const literals = ['@', '%', '$', '#', '!', '&', '?', '*'];
   let prevValue: string;
   let prevResult: string;
   return (value: string) => {
-    if (value == prevValue) {
+    if (value === prevValue) {
       return prevResult;
     } else {
       let result = '';
-      for (let i=0; i < value.length; i++) {
+      const length = (value.length < 38) ? value.length : 37;
+      for (let i=0; i < length; i++) {
         result += literals[Math.floor(Math.random()*literals.length)];;
       }
       prevValue = value;
@@ -121,7 +122,6 @@ export const MasterPasswordInput: React.FC<InputProps> = ({
       border: 0;
       color: var(--input-default-text-color);
       align-items: center;
-      width: 100%;
       height: 1.6em;
       position: absolute;
       user-select: none;
@@ -148,6 +148,13 @@ export const MasterPasswordInput: React.FC<InputProps> = ({
   );
 };
 
+const checkHTTP = (value: string) => {
+  while (value.slice(0, 4) === 'http') {
+    value = value.slice(4);
+  }
+  return value;
+};
+
 export const DomainNameInput: React.FC<InputProps> = ({
   onChange,
   value,
@@ -170,6 +177,7 @@ export const DomainNameInput: React.FC<InputProps> = ({
           // @ts-ignore
           <InnerInput
             onChange={onChange}
+            onBlur={onChange(checkHTTP(value))}
             value={value}
             ref={inputElement}
           />
@@ -183,13 +191,13 @@ const saltThePassword = (
   hash: (arg0: string) => string,
   autoCopy: boolean
 ): string => {
-  const {masterPassword, domainName, optionalSalt} = secretData;
+  const {masterPassword, clearDomainName, optionalSalt} = secretData;
 
   if (masterPassword.length === 0) {
     return '';
   }
 
-  const hashedPassword = hash(masterPassword + domainName + optionalSalt);
+  const hashedPassword = hash(masterPassword + clearDomainName + optionalSalt);
 
   if (autoCopy) {
     navigator.clipboard.writeText(hashedPassword);

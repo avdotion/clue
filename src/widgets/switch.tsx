@@ -25,7 +25,7 @@ const checkBoxStyles = {
       display: inline-block;
       border-radius: 5px;
       color: var(--input-neutral-text-color);
-      transition-duration: 0.7s;
+      transition-duration: 300ms;
     }
 
     |pane[active] {

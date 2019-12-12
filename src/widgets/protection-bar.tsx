@@ -21,7 +21,7 @@ type Props = {
 export const DataVisualizationBar: React.FC<Props> = ({
   secretData: {
     masterPassword,
-    domainName,
+    clearDomainName,
     optionalSalt,
   },
 }: Props) => styled`
@@ -36,7 +36,7 @@ export const DataVisualizationBar: React.FC<Props> = ({
   <use.wrapper>{
     masterPassword === ''
     ? new Array(3).fill(DEFAULT_EMOJI)
-    : domainName === ''
+    : clearDomainName === ''
       ? [
         emoji(masterPassword),
         DEFAULT_EMOJI,
@@ -44,9 +44,8 @@ export const DataVisualizationBar: React.FC<Props> = ({
       ]
       : [
           emoji(masterPassword),
-          emoji(domainName + optionalSalt),
-          emoji(optionalSalt + domainName + 'shift'),
+          emoji(clearDomainName + optionalSalt),
+          emoji(optionalSalt + clearDomainName + 'shift'),
         ]
   }</use.wrapper>
 );
-
