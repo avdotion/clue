@@ -8,3 +8,4 @@ export const activateIndents = () => {
   });
 };
 
+export default INDENTS;

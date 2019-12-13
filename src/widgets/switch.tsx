@@ -1,6 +1,7 @@
 import React from 'react';
 // @ts-ignore
 import styled, {use, css} from 'reshadow/macro';
+import INDENTS from '../entities/indents';
 
 const checkBoxStyles = {
   wrapper: css`
@@ -24,6 +25,7 @@ const checkBoxStyles = {
       display: inline-block;
       border-radius: 5px;
       color: var(--input-neutral-text-color);
+      transition: 300ms ease-out;
     }
 
     |pane[active] {
@@ -31,32 +33,69 @@ const checkBoxStyles = {
       color: var(--slider-active-text-color);
     }
   `,
+  slider: css`
+    |option {
+      position:relative;
+      float:left;
+      transition: 300ms ease-out;
+      padding: var(--indent1) var(--indent4);
+      line-height: 1.6em;
+      display: inline-block;
+      border-radius: 5px;
+      color: var(--input-neutral-text-color);
+    }
+
+    |selector {
+      position:absolute;
+      padding: var(--indent1) var(--indent4);
+      line-height: 1.6em;
+      display: inline-block;
+      border-radius: 5px;
+      transition: 300ms ease-out;
+      border-radius: 5px;
+      background-color: var(--slider-active-color);
+      color: var(--slider-active-text-color);
+    }
+  `,
 };
 
 type OptionProps = ({
-  active: boolean,
   label: string,
   onClick: (option: string) => void,
 });
 
 const Option: React.FC<OptionProps> = ({
-  active = false,
   label,
   onClick,
 }: OptionProps) => styled(
-  checkBoxStyles.clickablePannel
-)`
-  |pane[active] {
-    cursor: default;
-  }
-`(
-  <use.pane
-    active={active}
-    onClick={() => { onClick(label); }}
-  >
-    {label}
-  </use.pane>
+  checkBoxStyles.slider
+)``(
+    <use.option
+      onClick={() => { onClick(label); }}
+    >
+      {label}
+    </use.option>
 );
+
+type SelectorProps = {
+  label: string,
+  leftOffset: string,
+};
+
+const Selector: React.FC<SelectorProps> = ({
+  label,
+  leftOffset,
+}: SelectorProps) =>styled(
+  checkBoxStyles.slider
+    )`
+      |selector{
+        left: ${leftOffset};
+      }
+    `(
+    <use.selector>
+      {label}
+    </use.selector>
+  );
 
 type SliderProps = {
   value: string,
@@ -64,28 +103,40 @@ type SliderProps = {
   onSlide: (option: string) => void,
 };
 
+const calcWidth = (value: string, options: string[]) => {
+  const LIGATUREWIDTH = 7;
+  let result = 0;
+  for (let item of options) {
+    if (value === item) {
+      return `${result}px`;
+    } else {
+      result += item.length * LIGATUREWIDTH + INDENTS[3] * 2;
+    }
+  }
+};
+
 export const Slider: React.FC<SliderProps> = ({
   options,
   value,
   onSlide,
-}: SliderProps) => {
-  return styled(
-    checkBoxStyles.wrapper
-  )``(
+}: SliderProps) => styled(
+    checkBoxStyles.wrapper,
+    checkBoxStyles.slider
+  )`
+    |wrapper{
+      position:relative;
+    }
+  `(
     <use.wrapper>
-      {
-        options.map((option, index) => (
-          <Option
-            key={index}
-            active={option === value}
-            label={option}
-            onClick={onSlide}
-          />
-        ))
-      }
+      {options.map((option) =>
+        <Option
+          label={option}
+          onClick={onSlide}
+        />
+      )}
+      <Selector label={value} leftOffset={calcWidth(value, options) as string}/>
     </use.wrapper>
   );
-};
 
 type TriggerProps = {
   disabled: boolean,
