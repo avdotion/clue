@@ -103,6 +103,22 @@ export const MasterPasswordInput: React.FC<InputProps> = ({
   );
 };
 
+const clearDomainName = (domainName: string) => {
+  const FORBIDENVALUES = ['', 'http', 'https:', 'http:'];
+
+  const haveLastSlash = domainName[domainName.length-1] === '/';
+
+  domainName = (domainName.split('/').filter(
+    (elem) => !FORBIDENVALUES.includes(elem)
+  ).join('/'));
+
+  if (haveLastSlash) {
+    domainName += '/';
+  }
+
+  return domainName;
+};
+
 export const DomainNameInput: React.FC<InputProps> = ({
   onChange,
   value,
@@ -124,7 +140,7 @@ export const DomainNameInput: React.FC<InputProps> = ({
         {
           // @ts-ignore
           <InnerInput
-            onChange={onChange}
+            onChange={(domainName) => onChange(clearDomainName(domainName))}
             value={value}
             ref={inputElement}
           />

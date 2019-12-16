@@ -18,6 +18,13 @@ import {activatePalette} from './entities/palette';
 import {HASH_FUNCTIONS, DEFAULT_HASH_FUNCTION} from './utils/crypto';
 const HASH_METHODS = Object.keys(HASH_FUNCTIONS);
 
+const ignoreLastSlash = (domainName: string) => {
+  while (domainName[domainName.length - 1] === '/') {
+    domainName = domainName.slice(0, domainName.length - 1);
+  }
+  return domainName;
+};
+
 export const App: React.FC = () => {
   const [masterPassword, setMasterPassword] = useState<string>('');
   const [domainName, setDomainName] = useState<string>('');
@@ -141,7 +148,11 @@ export const App: React.FC = () => {
           </Section>
           <Section>
             <DataVisualizationBar
-              secretData={{masterPassword, domainName, optionalSalt}}
+              secretData={{
+                          masterPassword,
+                          domainName: ignoreLastSlash(domainName),
+                          optionalSalt,
+                         }}
             />
           </Section>
           <Section
@@ -153,7 +164,11 @@ export const App: React.FC = () => {
             `}
           >
             <SaltedPassword
-              secretData={{masterPassword, domainName, optionalSalt}}
+              secretData={{
+                          masterPassword,
+                          domainName: ignoreLastSlash(domainName),
+                          optionalSalt,
+                         }}
               hashMethodName={hashMethod}
               isAutoCopyEnabled={isAutoCopyEnabled}
             />
