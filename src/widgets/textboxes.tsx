@@ -140,7 +140,8 @@ export const DomainNameInput: React.FC<InputProps> = ({
         {
           // @ts-ignore
           <InnerInput
-            onChange={(domainName) => onChange(clearDomainName(domainName))}
+            onChange={(domainName: string) =>
+                        onChange(clearDomainName(domainName))}
             value={value}
             ref={inputElement}
           />
