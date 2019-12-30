@@ -1,7 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 // @ts-ignore
 import styled, {use, css} from 'reshadow/macro';
-import INDENTS from '../entities/indents';
 
 const checkBoxStyles = {
   wrapper: css`
@@ -57,86 +56,84 @@ const checkBoxStyles = {
       color: var(--slider-active-text-color);
     }
   `,
+  dropDownList: css`
+    |option {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      position: relative;
+      float:left;
+      transition: 300ms ease-out;
+      padding: var(--indent1);
+      line-height: 1.6em;
+      border-radius: 5px;
+      color: var(--input-neutral-text-color);
+    }
+
+    |option[active] {
+      background-color: var(--slider-active-color);
+      color: var(--slider-active-text-color);
+    }
+  `,
 };
+
 
 type OptionProps = ({
   label: string,
-  onClick: (option: string) => void,
-});
+  onClick: (value: string) => void,
+})
 
-const Option: React.FC<OptionProps> = ({
+const Option: React.FC<OptionProps> =({
   label,
   onClick,
 }: OptionProps) => styled(
-  checkBoxStyles.slider
+  checkBoxStyles.dropDownList
 )``(
-    <use.option
-      onClick={() => { onClick(label); }}
-    >
-      {label}
-    </use.option>
+  <use.option
+    onClick={() => 0}
+  >
+    {label}
+  </use.option>
 );
 
-type SelectorProps = {
-  label: string,
-  leftOffset: string,
-};
 
-const Selector: React.FC<SelectorProps> = ({
-  label,
-  leftOffset,
-}: SelectorProps) =>styled(
-  checkBoxStyles.slider
-    )`
-      |selector{
-        left: ${leftOffset};
-      }
-    `(
-    <use.selector>
-      {label}
-    </use.selector>
-  );
-
-type SliderProps = {
+type DropDownListProps = ({
   value: string,
   options: string[],
-  onSlide: (option: string) => void,
-};
+  onSelect: (option: string) => void,
+});
 
-const calcWidth = (value: string, options: string[]) => {
-  const LIGATUREWIDTH = 7;
-  let result = 0;
-  for (let item of options) {
-    if (value === item) {
-      return `${result}px`;
-    } else {
-      result += item.length * LIGATUREWIDTH + INDENTS[3] * 2;
-    }
+export const DropDownList: React.FC<DropDownListProps> = ({
+  value,
+  options,
+  onSelect,
+}: DropDownListProps) => {
+  const [isDroppedOut, setDroppedOut] = useState(false);
+
+  console.log(isDroppedOut);
+
+  if (isDroppedOut) {
+    return (
+      <div />
+    );
+  } else {
+    return styled(
+      checkBoxStyles.wrapper
+    )`
+      |wrapper {
+        width: 100px;
+      }
+    `(
+      <use.wrapper>
+        <Option
+          label={value}
+          active={true}
+          onClick={() => setDroppedOut(true)}
+        />
+      </use.wrapper>
+    );
   }
 };
-
-export const Slider: React.FC<SliderProps> = ({
-  options,
-  value,
-  onSlide,
-}: SliderProps) => styled(
-    checkBoxStyles.wrapper,
-    checkBoxStyles.slider
-  )`
-    |wrapper{
-      position:relative;
-    }
-  `(
-    <use.wrapper>
-      {options.map((option) =>
-        <Option
-          label={option}
-          onClick={onSlide}
-        />
-      )}
-      <Selector label={value} leftOffset={calcWidth(value, options) as string}/>
-    </use.wrapper>
-  );
 
 type TriggerProps = {
   disabled: boolean,

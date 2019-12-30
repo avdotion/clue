@@ -8,7 +8,7 @@ import {
   MasterPasswordInput,
   SaltedPassword,
 } from './widgets/textboxes';
-import {Slider, Trigger} from './widgets/switch';
+import {DropDownList, Trigger} from './widgets/switch';
 import {DataVisualizationBar} from './widgets/protection-bar';
 import {Section} from './widgets/layout';
 
@@ -126,10 +126,10 @@ export const App: React.FC = () => {
             />
           </Section>
           <Section>
-            <Slider
+            <DropDownList
               options={HASH_METHODS}
               value={hashMethod}
-              onSlide={(newValue: string) => { setHashMethod(newValue); }}
+              onSelect={(newValue: string) => { setHashMethod(newValue); }}
             />
             <Trigger
               label={'autocopy'}
