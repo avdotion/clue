@@ -32,39 +32,13 @@ const checkBoxStyles = {
       color: var(--slider-active-text-color);
     }
   `,
-  slider: css`
-    |option {
-      position:relative;
-      float:left;
-      transition: 300ms ease-out;
-      padding: var(--indent1) var(--indent4);
-      line-height: 1.6em;
-      display: inline-block;
-      border-radius: 5px;
-      color: var(--input-neutral-text-color);
-    }
-
-    |selector {
-      position:absolute;
-      padding: var(--indent1) var(--indent4);
-      line-height: 1.6em;
-      display: inline-block;
-      border-radius: 5px;
-      transition: 300ms ease-out;
-      border-radius: 5px;
-      background-color: var(--slider-active-color);
-      color: var(--slider-active-text-color);
-    }
-  `,
   dropDownList: css`
     |option {
-      width: 100%;
+      width: 100px;
       display: flex;
       justify-content: center;
-      position: relative;
-      float:left;
-      transition: 300ms ease-out;
-      padding: var(--indent1);
+      padding-top: var(--indent1);
+      padding-bottom: var(--indent1);
       line-height: 1.6em;
       border-radius: 5px;
       color: var(--input-neutral-text-color);
@@ -74,23 +48,32 @@ const checkBoxStyles = {
       background-color: var(--slider-active-color);
       color: var(--slider-active-text-color);
     }
+
+    |menu {
+      position: absolute;
+      border-radius: 0 0 5px 5px;
+      background-color: var(--slider-default-color);
+    }
   `,
 };
 
 
 type OptionProps = ({
   label: string,
+  active: boolean,
   onClick: (value: string) => void,
 })
 
 const Option: React.FC<OptionProps> =({
   label,
+  active,
   onClick,
 }: OptionProps) => styled(
   checkBoxStyles.dropDownList
 )``(
   <use.option
-    onClick={() => 0}
+    active={active}
+    onClick={onClick}
   >
     {label}
   </use.option>
@@ -110,29 +93,39 @@ export const DropDownList: React.FC<DropDownListProps> = ({
 }: DropDownListProps) => {
   const [isDroppedOut, setDroppedOut] = useState(false);
 
-  console.log(isDroppedOut);
+  return styled(
+    checkBoxStyles.wrapper,
+    checkBoxStyles.dropDownList
+  )`
+    |wrapper {
+      width: 100px;
+    }
 
-  if (isDroppedOut) {
-    return (
-      <div />
-    );
-  } else {
-    return styled(
-      checkBoxStyles.wrapper
-    )`
-      |wrapper {
-        width: 100px;
-      }
-    `(
-      <use.wrapper>
-        <Option
-          label={value}
-          active={true}
-          onClick={() => setDroppedOut(true)}
-        />
-      </use.wrapper>
-    );
-  }
+    |wrapper[isDroppedOut] {
+      border-radius: 5px 5px 0 0;
+    }
+  `(
+    <use.wrapper isDroppedOut={isDroppedOut}>
+      <Option
+        label={value}
+        active={true}
+        onClick={() => setDroppedOut(!isDroppedOut)}
+      />
+      <use.menu>
+        {isDroppedOut? options.map((option) => option !== value ?
+          <Option
+            label={option}
+            active={false}
+            onClick={() => {
+                setDroppedOut(!isDroppedOut);
+                onSelect(option);
+              }
+            }
+          /> : ''
+        ) : ''}
+      </use.menu>
+    </use.wrapper>
+  );
 };
 
 type TriggerProps = {
