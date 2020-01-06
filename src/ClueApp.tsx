@@ -1,45 +1,22 @@
 import React, {useState, useEffect} from 'react';
-// @ts-ignore
-import styled, {use, css} from 'reshadow/macro';
+import styled, {use, css} from 'reshadow';
 
-import {
-  Input as OptionalSaltInput,
-  DomainNameInput,
-  MasterPasswordInput,
-  SaltedPassword,
-} from './widgets/textboxes';
-import {Slider, Trigger} from './widgets/switch';
-import {DataVisualizationBar} from './widgets/protection-bar';
-import {Section} from './widgets/layout';
+import MasterPassword from '#/widgets/MasterPassword';
+import DomainName from '#/widgets/DomainName';
+import OptionalSalt from '#/widgets/OptionalSalt';
+import HashMethod from '#/widgets/HashMethod';
+import AutoCopy from '#/widgets/AutoCopy';
+import EmojiBar from '#/widgets/EmojiBar';
+import SaltedPassword from '#/widgets/SaltedPassword';
 
-import {activateIndents} from './entities/indents';
-import {activatePalette} from './entities/palette';
+import Section from '#/components/Section';
 
-import {HASH_FUNCTIONS, DEFAULT_HASH_FUNCTION} from './utils/crypto';
-const HASH_METHODS = Object.keys(HASH_FUNCTIONS);
+import {activateIndents} from '#/entities/indents';
+import {activatePalette} from '#/entities/palette';
 
-export const App: React.FC = () => {
-  const [masterPassword, setMasterPassword] = useState<string>('');
-  const [domainName, setDomainName] = useState<string>('');
-  const [optionalSalt, setOptionalSalt] = useState<string>('');
-
-  const [hashMethod, setHashMethod] = useState<string>(
-    localStorage.getItem('hashMethod') || DEFAULT_HASH_FUNCTION
-  );
-  useEffect(() => { localStorage.setItem('hashMethod', hashMethod); });
-
-  const [DISABLED, ENABLED] = ['DISABLED', 'ENABLED'];
-  const toStorable = (flag: boolean): string => flag ? ENABLED : DISABLED;
-  const [isAutoCopyEnabled, setAutoCopy] = useState<boolean>(
-    localStorage.getItem('autoCopy') === ENABLED || false
-  );
-  useEffect(() => {
-    localStorage.setItem('autoCopy', toStorable(isAutoCopyEnabled));
-  });
-
+export const ClueApp: React.FC = () => {
   const colorScheme = useDayLightTheme();
   activatePalette(colorScheme);
-
   activateIndents();
 
   return styled`
@@ -108,41 +85,20 @@ export const App: React.FC = () => {
         </use.meta>
         <use.mainframe>
           <Section title='Master Password'>
-            <MasterPasswordInput
-              value={masterPassword}
-              onChange={(newValue: string) => { setMasterPassword(newValue); }}
-            />
+            <MasterPassword />
           </Section>
           <Section title='Domain Name'>
-            <DomainNameInput
-              value={domainName}
-              onChange={(newValue: string) => { setDomainName(newValue); }}
-            />
+            <DomainName />
           </Section>
           <Section title='Salt (optional)'>
-            <OptionalSaltInput
-              value={optionalSalt}
-              onChange={(newValue: string) => { setOptionalSalt(newValue); }}
-            />
+            <OptionalSalt />
           </Section>
           <Section>
-            <Slider
-              options={HASH_METHODS}
-              value={hashMethod}
-              onSlide={(newValue: string) => { setHashMethod(newValue); }}
-            />
-            <Trigger
-              label={'autocopy'}
-              disabled={Boolean(!navigator.clipboard)}
-              disabledAlert={'AutoCopy isn\'t supported by this browser'}
-              active={isAutoCopyEnabled}
-              onTrigger={(newValue) => { setAutoCopy(newValue); }}
-            />
+            <HashMethod />
+            <AutoCopy />
           </Section>
           <Section>
-            <DataVisualizationBar
-              secretData={{masterPassword, domainName, optionalSalt}}
-            />
+            <EmojiBar />
           </Section>
           <Section
             title='Salted Password'
@@ -152,11 +108,7 @@ export const App: React.FC = () => {
               }
             `}
           >
-            <SaltedPassword
-              secretData={{masterPassword, domainName, optionalSalt}}
-              hashMethodName={hashMethod}
-              isAutoCopyEnabled={isAutoCopyEnabled}
-            />
+            <SaltedPassword />
           </Section>
         </use.mainframe>
       </use.container>
