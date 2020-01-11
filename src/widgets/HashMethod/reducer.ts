@@ -19,9 +19,9 @@ const initialState: State = {
 export default produce((draft: Draft<State>, action) => {
   switch (action.type) {
     case getType(chooseMethod): {
-      const newcurrentMethod = action.payload;
-      storeHashMethod(newcurrentMethod);
-      draft.currentMethod = newcurrentMethod;
+      const newCurrentMethod = action.payload;
+      storeHashMethod(newCurrentMethod);
+      draft.currentMethod = newCurrentMethod;
     }
   }
 }, initialState);
