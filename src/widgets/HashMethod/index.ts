@@ -6,9 +6,9 @@ import View from '#/components/Slider';
 import {chooseMethod} from './actions';
 
 const mapStateToProps = ({
-  hashMethod: {chosenMethod, methods},
+  hashMethod: {currentMethod, methods},
 }: RootState) => ({
-  chosenOption: chosenMethod,
+  currentOption: currentMethod,
   options: methods,
 });
 

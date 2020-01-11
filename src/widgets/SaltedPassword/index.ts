@@ -9,13 +9,13 @@ const mapStateToProps = ({
   domainName,
   optionalSalt,
   autoCopy: {isEnabled: isAutoCopyEnabled},
-  hashMethod: {chosenMethod},
+  hashMethod: {currentMethod},
 }: RootState) => ({
   masterPassword: masterPassword.value,
   domainName: domainName.value,
   optionalSalt: optionalSalt.value,
   isAutoCopyEnabled,
-  hashMethod: chosenMethod,
+  hashMethod: currentMethod,
 });
 
 export default connect(

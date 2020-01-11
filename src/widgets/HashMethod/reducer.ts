@@ -12,16 +12,16 @@ const availableMethods = Object.keys(Hashes);
 const fallbackHashMethod = availableMethods[1];
 
 const initialState: State = {
-  chosenMethod: obtainHashMethod() || fallbackHashMethod,
+  currentMethod: obtainHashMethod() || fallbackHashMethod,
   methods: availableMethods,
 };
 
 export default produce((draft: Draft<State>, action) => {
   switch (action.type) {
     case getType(chooseMethod): {
-      const newChosenMethod = action.payload;
-      storeHashMethod(newChosenMethod);
-      draft.chosenMethod = newChosenMethod;
+      const newcurrentMethod = action.payload;
+      storeHashMethod(newcurrentMethod);
+      draft.currentMethod = newcurrentMethod;
     }
   }
 }, initialState);

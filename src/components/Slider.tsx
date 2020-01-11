@@ -30,13 +30,13 @@ const Option: React.FC<OptionProps> = ({
 
 type SliderProps = {
   options: readonly string[],
-  chosenOption: string,
+  currentOption: string,
   chooseOption: (option: string) => void,
 };
 
 export default function Slider ({
   options,
-  chosenOption,
+  currentOption,
   chooseOption,
 }: SliderProps) {
   return styled(
@@ -46,7 +46,7 @@ export default function Slider ({
       { options.map((option, index) => (
           <Option
             key={index}
-            active={option === chosenOption}
+            active={option === currentOption}
             label={option}
             onClick={chooseOption}
           />

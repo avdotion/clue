@@ -1,7 +1,7 @@
 import {HashMethod} from '#/utils/crypto';
 
 export type State = {
-  chosenMethod: HashMethod,
+  currentMethod: HashMethod,
   methods: readonly HashMethod[],
 };
 
