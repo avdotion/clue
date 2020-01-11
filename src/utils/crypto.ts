@@ -1,18 +1,16 @@
-const CryptoES = require('crypto-es').default;
+// @ts-ignore
+import CryptoES from 'crypto-es';
 
-export type HashMethod = string;
-export type HashFunction = (rawMessage: string) => {
-  toString: (decoder: any) => string,
-};
-
-const DEFAULT_HASH_LENGTH = 20;
-export const Hashes: {[name: string]: HashFunction} = {
+const DEFAULT_HASH_LENGTH: number = 20;
+export const DEFAULT_HASH_FUNCTION: string = 'SHA3';
+export const HASH_FUNCTIONS = {
   'MD5': CryptoES.MD5,
   'SHA3': CryptoES.SHA3,
 };
 
-export const prepareHash = (hashName: HashMethod) =>
-  (rawMessage: string) => Hashes[hashName](rawMessage)
+export const prepareHash = (hashFunctionName: string) => (rawMessage: string) =>
+  // @ts-ignore
+  HASH_FUNCTIONS[hashFunctionName](rawMessage)
       .toString(CryptoES.enc.Base64)
       .replace(/=+$/, '')
       .replace(/\+/g, '-')
