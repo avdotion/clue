@@ -1,5 +1,5 @@
 import {getType} from 'typesafe-actions';
-import produce from 'immer';
+import produce, {Draft} from 'immer';
 
 import {boolStorage} from '#/utils/localStorage';
 
@@ -12,7 +12,7 @@ const initialState: State = {
   isEnabled: obtainAutoCopy(),
 };
 
-export default produce((draft, action) => {
+export default produce((draft: Draft<State>, action) => {
   switch (action.type) {
     case getType(trigger): {
       const isAutoCopyEnabled = action.payload;

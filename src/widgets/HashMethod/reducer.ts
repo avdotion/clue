@@ -1,5 +1,5 @@
 import {getType} from 'typesafe-actions';
-import produce from 'immer';
+import produce, {Draft} from 'immer';
 
 import {Hashes} from '#/utils/crypto';
 import {storage} from '#/utils/localStorage';
@@ -16,7 +16,7 @@ const initialState: State = {
   methods: availableMethods,
 };
 
-export default produce((draft, action) => {
+export default produce((draft: Draft<State>, action) => {
   switch (action.type) {
     case getType(chooseMethod): {
       const newChosenMethod = action.payload;

@@ -1,4 +1,5 @@
 import {combineReducers} from 'redux';
+
 import MasterPasswordReducer from '#/widgets/MasterPassword/reducer';
 import DomainNameReducer from '#/widgets/DomainName/reducer';
 import OptionalSaltReducer from '#/widgets/OptionalSalt/reducer';
