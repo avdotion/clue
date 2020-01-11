@@ -1,4 +1,4 @@
-import {HSL} from './../utils/colorParser';
+import {HSL} from '#/utils/colorParser';
 
 const COLOR_PALETTE = {
   'background-color': {
