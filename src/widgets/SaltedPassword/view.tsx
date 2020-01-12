@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, {use} from 'reshadow';
+import * as clipboard from 'clipboard-polyfill';
 
 import {MasterPassword} from '#/widgets/MasterPassword/types';
 import {DomainName} from '#/widgets/DomainName/types';
@@ -41,6 +42,15 @@ export default function SaltedPasswordComponent ({
     return hashedPassword;
   };
 
+  const copyToClipBoard = () => {
+    clipboard.writeText(
+      saltThePassword(
+        prepareHash(hashMethod),
+        isAutoCopyEnabled
+      )
+    );
+  };
+
   return styled(
     defaultTextBoxStyle
   )`
@@ -54,7 +64,10 @@ export default function SaltedPasswordComponent ({
       line-height: 1.6em;
     }
   `(
-    <use.wrapper>
+    <use.wrapper
+      title={'Tap to copy to the clipboard'}
+      onClick={copyToClipBoard}
+    >
       <span>
         {
           saltThePassword(
