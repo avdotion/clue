@@ -1,19 +1,21 @@
 import {connect} from 'react-redux';
 
 import {RootState} from '#/store';
-import View from '#/components/Slider';
+import View from '#/components/Dropdown';
 
-import {chooseMethod} from './actions';
+import {chooseMethod, setDroppedOut} from './actions';
 
 const mapStateToProps = ({
-  hashMethod: {currentMethod, methods},
+  hashMethod: {currentMethod, methods, isDroppedOut},
 }: RootState) => ({
   currentOption: currentMethod,
   options: methods,
+  isDroppedOut: isDroppedOut,
 });
 
 const mapDispatchToProps = {
   chooseOption: chooseMethod,
+  setDroppedOut: setDroppedOut,
 };
 
 export default connect(
