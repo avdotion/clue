@@ -97,10 +97,8 @@ export default function Slider ({
         break;
       }
     }
-    if (currentOffsetLeft !== offsetLeft) {
-      setOffsetLeft(offsetLeft);
-    }
-  });
+    setOffsetLeft(offsetLeft);
+  }, [currentOption, optionsRefs]);
 
   return styled(
     checkBoxStyles.wrapper
