@@ -81,23 +81,23 @@ export default function Slider ({
 
   const [currentOffsetLeft, setOffsetLeft] = useState(0);
 
-  let optionsRefs = new Map();
-  for (let option of options) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    optionsRefs.set(option, useRef(null));
-  }
+  let optionsRefs = useRef([]);
 
   useEffect(() => {
     let offsetLeft = 0;
     // @ts-ignore
-    for (let [option, ref] of optionsRefs.entries()) {
-      if (option !== currentOption) {
-        offsetLeft += ref.current.offsetWidth;
+    for (let ref of optionsRefs.current) {
+      // @ts-ignore
+      if (ref.innerText !== currentOption) {
+        // @ts-ignore
+        offsetLeft += ref.offsetWidth;
       } else {
         break;
       }
     }
+
     setOffsetLeft(offsetLeft);
+
   }, [currentOption, optionsRefs]);
 
   return styled(
@@ -113,7 +113,8 @@ export default function Slider ({
             key={index}
             label={option}
             onClick={chooseOption}
-            ref={optionsRefs.get(option)}
+            // @ts-ignore
+            ref={option => optionsRefs.current[index] = option}
           />
         ))
       }
