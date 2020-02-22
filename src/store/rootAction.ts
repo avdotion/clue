@@ -5,9 +5,9 @@ import * as MasterPasswordActions from '#/widgets/MasterPassword/actions';
 import * as OptionalSaltActions from '#/widgets/OptionalSalt/actions';
 
 export default {
-  AutoCopy: AutoCopyActions,
-  DomainName: DomainNameActions,
-  HashMethod: HashMethodActions,
-  MasterPassword: MasterPasswordActions,
-  OptionalSalt: OptionalSaltActions,
+  masterPassword: MasterPasswordActions,
+  domainName: DomainNameActions,
+  optionalSalt: OptionalSaltActions,
+  autoCopy: AutoCopyActions,
+  hashMethod: HashMethodActions,
 };
