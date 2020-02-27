@@ -79,6 +79,10 @@ export default function Slider ({
   chooseOption,
 }: SliderProps) {
 
+  if (options.indexOf(currentOption) === -1) {
+    chooseOption(options[0]);
+  }
+
   const [currentOffsetLeft, setOffsetLeft] = useState(0);
 
   let optionsRefs = useRef([]);
