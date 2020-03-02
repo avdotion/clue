@@ -1,0 +1,28 @@
+---
+name: Slider
+route: /
+---
+
+import { Playground, Props } from 'docz'
+import { Slider } from './index'
+
+# Slider
+
+<Props of={Slider} />
+
+## Basic usage
+
+<Playground>
+  {() => {
+      const options = ['md5', 'sha3', 'ripend-16']
+      const [currentOption, setCurrentOption] = React.useState(options[0])
+      return (
+        <Slider
+          options={options}
+          currentOption={currentOption}
+          chooseOption={(option) => setCurrentOption(option)}
+        />
+      )
+    }
+  }
+</Playground>
