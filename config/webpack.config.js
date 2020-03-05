@@ -50,7 +50,7 @@ const sassModuleRegex = /\.module\.(scss|sass)$/;
 
 // This is the production and development configuration.
 // It is focused on developer experience, fast rebuilds, and a minimal bundle.
-module.exports = function(webpackEnv) {
+module.exports = function(webpackEnv, options) {
   const isEnvDevelopment = webpackEnv === 'development';
   const isEnvProduction = webpackEnv === 'production';
 
@@ -64,6 +64,9 @@ module.exports = function(webpackEnv) {
   // Omit trailing slash as %PUBLIC_URL%/xyz looks better than %PUBLIC_URL%xyz.
   // Get environment variables to inject into our app.
   const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1));
+
+  // Иногда не нужно запускать ESLint проверки, для этого используется флаг
+  const isESLintCheckNeeded = options.eslintEnabled;
 
   // common function to get style loaders
   const getStyleLoaders = (cssOptions, preProcessor) => {
@@ -325,7 +328,7 @@ module.exports = function(webpackEnv) {
 
         // First, run the linter.
         // It's important to do this before Babel processes the JS.
-        {
+        isESLintCheckNeeded ? {
           test: /\.(js|mjs|jsx|ts|tsx)$/,
           enforce: 'pre',
           use: [
@@ -341,7 +344,7 @@ module.exports = function(webpackEnv) {
             },
           ],
           include: paths.appSrc,
-        },
+        } : {},
         {
           // "oneOf" will traverse all following loaders until one will
           // match the requirements. When no loader matches it will fall
