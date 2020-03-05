@@ -19,6 +19,7 @@ const path = require('path');
 const chalk = require('react-dev-utils/chalk');
 const fs = require('fs-extra');
 const webpack = require('webpack');
+const minimist = require('minimist');
 const configFactory = require('../config/webpack.config');
 const paths = require('../config/paths');
 const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
@@ -43,8 +44,16 @@ if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
   process.exit(1);
 }
 
+// Иногда нужно добавить дополнительные параметры для сборки
+const options = minimist(process.argv.slice(2));
+
+// Экстрактим только нужные параметры и переименовываем их на этом шаге
+const processAgruments = ({eslintEnabled}) => ({
+  eslintEnabled: eslintEnabled ? eslintEnabled.toLowerCase() === 'true' : true,
+});
+
 // Generate configuration
-const config = configFactory('production');
+const config = configFactory('production', processAgruments(options));
 
 // We require that you explicitly set browsers and do not fall back to
 // browserslist defaults.
