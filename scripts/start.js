@@ -18,6 +18,7 @@ require('../config/env');
 const fs = require('fs');
 const chalk = require('react-dev-utils/chalk');
 const webpack = require('webpack');
+const minimist = require('minimist');
 const WebpackDevServer = require('webpack-dev-server');
 const clearConsole = require('react-dev-utils/clearConsole');
 const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
@@ -43,6 +44,12 @@ if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
 // Tools like Cloud9 rely on this.
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
+
+const options = minimist(process.argv.slice(2));
+
+const processAgruments = ({eslintEnabled}) => ({
+  eslintEnabled: eslintEnabled ? eslintEnabled.toLowerCase() === 'true' : true,
+});
 
 if (process.env.HOST) {
   console.log(
@@ -76,7 +83,7 @@ checkBrowsers(paths.appPath, isInteractive)
       return;
     }
 
-    const config = configFactory('development');
+    const config = configFactory('development', processAgruments(options));
     const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
     const appName = require(paths.appPackageJson).name;
     const useTypeScript = fs.existsSync(paths.appTsConfig);
