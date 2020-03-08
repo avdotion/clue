@@ -26,7 +26,6 @@
     "clipboard-polyfill": "^2.8.6",
     "crypto-es": "^1.2.2",
     "css-loader": "3.4.2",
-    "docz": "^2.2.0",
     "dotenv": "8.2.0",
     "dotenv-expand": "5.1.0",
     "eslint": "^6.6.0",
@@ -88,10 +87,7 @@
     "test:eslint": "eslint --ext .jsx,.js,.ts,.tsx src/ --color --cache",
     "test:typescript": "./node_modules/.bin/tsc -p .",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "docz:dev": "docz dev",
-    "docz:build": "docz build",
-    "docz:serve": "docz build && docz serve"
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
