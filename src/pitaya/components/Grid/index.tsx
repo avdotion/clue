@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, {use} from 'reshadow/macro';
+import styled, {use} from 'reshadow';
 
 const DEFAULT_COLUMN_SIZE = 1;
 
