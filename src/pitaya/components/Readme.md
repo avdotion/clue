@@ -9,3 +9,4 @@
 * Components should not have outer margins in common cases, opposite the ones should be considered on a higher level
 * Custom indents or colours should not be used at all, it is recommended to use the read-only sets
 * Each component should have `Readme.md` in English describing behaviour, goal and examples
+* Each component prop must be described with comment `/** */` in a TypeScript typing block
