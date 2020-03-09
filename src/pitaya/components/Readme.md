@@ -10,3 +10,4 @@
 * Custom indents or colours should not be used at all, it is recommended to use the read-only sets
 * Each component should have `Readme.md` in English describing behaviour, goal and examples
 * Each component prop must be described with comment `/** */` in a TypeScript typing block
+* Each component should have a default export
