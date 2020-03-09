@@ -14,56 +14,96 @@ type GridProps = {
   wrap?: boolean,
 };
 
-export const Grid = ({
+const getColumnSize = (column: React.ReactElement<ColumnProps>) =>
+  column.props.size || DEFAULT_COLUMN_SIZE;
+
+const getColumnContent = (column: React.ReactElement<ColumnProps>) =>
+  column.props.children;
+
+const getSumOfColumnsSizes = (columns: React.ReactElement<ColumnProps>[]) =>
+  columns
+    .map(getColumnSize)
+    .reduce((acc, cur) => acc + cur, 0);
+
+const Grid = ({
   children,
   gap = '0',
-  size: containerSize = 2,
+  size,
   wrap = false,
 }: GridProps) => {
-  const columns: React.ReactElement<ColumnProps>[] = [];
-  let columnPointer = 1;
-  let rowPointer = 1;
+  const childrenArray = React.Children.toArray(children)
+    .filter(React.isValidElement);
+  const columns: React.ReactElement<ColumnProps>[] = (childrenArray as any);
 
-  React.Children.forEach(children, (child, index) => {
-    if (!React.isValidElement(child)) {
-      return;
-    };
+  const gridSize = size === undefined
+    ? getSumOfColumnsSizes(columns)
+    : size;
 
-    const selfSize = child.props.size || DEFAULT_COLUMN_SIZE;
+  type Reduce = {
+    columns: React.ReactElement<LocatedColumnProps>[],
+    skipNext: boolean,
+    columnPointer: number,
+    rowPointer: number,
+  };
 
-    if (selfSize > containerSize) {
-      return;
-    }
-
-    if (columnPointer + selfSize > containerSize + 1) {
-      if (!wrap) {
-        return;
+  const {columns: reducedColumns} = columns
+    .reduce<Reduce>((acc, column, index) => {
+      if (acc.skipNext) {
+        return acc;
       }
-      rowPointer += 1;
-      columnPointer = 1;
-    }
+      const columnSize = getColumnSize(column);
+      const columnContent = getColumnContent(column);
 
-    columns.push(
-      React.cloneElement(child, {
-        columnProp: [columnPointer, columnPointer + selfSize],
-        rowProp: wrap ? [rowPointer, rowPointer + 1] : undefined,
-        key: index,
-      })
-    );
-    columnPointer += selfSize;
-  });
+      // Skip columns which does not fit in a grid
+      if (columnSize > gridSize) {
+        acc.skipNext = true;
+        return acc;
+      }
+
+      // Wrap if enabled, skip if disabled
+      if (acc.columnPointer + columnSize > gridSize + 1) {
+        if (!wrap) {
+          // Stop skipping wide columns in favour of narrow ones
+          acc.skipNext = true;
+          return acc;
+        }
+        acc.rowPointer += 1;
+        acc.columnPointer = 1;
+      }
+
+      const locatedColumn = (
+        <LocatedColumn
+          columnProp={[acc.columnPointer, acc.columnPointer + columnSize]}
+          rowProp={[acc.rowPointer, acc.rowPointer + 1]}
+          key={index}
+        >
+          {columnContent}
+        </LocatedColumn>
+      );
+
+      acc.columns.push(locatedColumn);
+      acc.columnPointer += columnSize;
+
+      return acc;
+    }, {
+      columns: [],
+      skipNext: false,
+      // In display: grid terms everything starts from 1
+      columnPointer: 1,
+      rowPointer: 1,
+    });
 
   return styled`
-    |container {
+    |grid {
       width: 100%;
       display: grid;
       grid-gap: ${gap};
-      grid-template-columns: repeat(${containerSize}, 1fr);
+      grid-template-columns: repeat(${gridSize}, 1fr);
     }
   `(
-    <use.container>
-      {columns}
-    </use.container>
+    <use.grid>
+      {reducedColumns}
+    </use.grid>
   );
 };
 
@@ -72,25 +112,42 @@ type ColumnProps = {
   children: React.ReactNode,
   /** Number of horizontal cells in grid */
   size?: number,
-  columnProp?: [number, number],
-  rowProp?: [number, number],
 };
 
 export const Column = ({
   children,
   size = DEFAULT_COLUMN_SIZE,
-  columnProp = [0, 0],
-  rowProp = [1, 2],
-}: ColumnProps) => styled`
-  |column {
-    grid-column-start: ${columnProp[0]};
-    grid-column-end: ${columnProp[1]};
+}: ColumnProps) => (<div />);
 
-    grid-row-start: ${rowProp[0]};
-    grid-row-end: ${rowProp[1]};
-  }
-`(
-  <use.column>
-    {children}
-  </use.column>
-);
+type LocatedColumnProps = {
+  /** Inner content */
+  children: React.ReactNode,
+  /** Column indexes */
+  columnProp: [number, number],
+  /** Row indexes */
+  rowProp: [number, number],
+};
+
+const LocatedColumn = ({
+  children,
+  columnProp,
+  rowProp,
+}: LocatedColumnProps) => {
+  const [columnStart, columnEnd] = columnProp;
+  const [rowStart, rowEnd] = rowProp;
+
+  return styled`
+    |column {
+      grid-column-start: ${columnStart};
+      grid-column-end: ${columnEnd};
+      grid-row-start: ${rowStart};
+      grid-row-end: ${rowEnd};
+    }
+  `(
+    <use.column>
+      {children}
+    </use.column>
+  );
+};
+
+export default Grid;
