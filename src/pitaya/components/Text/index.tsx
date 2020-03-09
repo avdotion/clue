@@ -16,26 +16,30 @@ const mapThemeToDom = (theme: Theme) => themeDomMap[theme];
 const transformColorToRGBA = (color: Color) =>
   `rgba(${color.join(',')})`;
 
-type TypoProps = {
+type TextProps = {
+  /** Inner text */
   children: React.ReactNode,
+  /** Common preferences */
   theme: Theme,
+  /** Font style */
   fontStyle: 'normal' | 'italic',
+  /** Font color */
   color: Color,
 };
 
-export const Typo = ({
+export const Text = ({
   children,
   theme = 'paragraph',
   fontStyle = 'normal',
   color = DEFAULT_COLOR,
-}: TypoProps) => styled`
-  |typo {
+}: TextProps) => styled`
+  |text {
     font-family: 'Roboto Mono', monospace;
     font-style: ${fontStyle};
     color: ${transformColorToRGBA(color)}
   }
 
-  |typo[theme] {
+  |text[theme] {
     &='heading' {
       font-size: 24px;
       font-weight: 500;
@@ -47,12 +51,12 @@ export const Typo = ({
     }
   }
 `(
-  <use.typo
+  <use.text
     as={mapThemeToDom(theme)}
     {...use({theme})}
   >
     {children}
-  </use.typo>
+  </use.text>
 );
 
-export default Typo;
+export default Text;
