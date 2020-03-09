@@ -6,10 +6,11 @@ const colorPalette = {
 };
 
 type RootProps = {
+  /** Root content */
   children: React.ReactNode,
 };
 
-export const Root = ({
+const Root = ({
   children,
 }: RootProps) => styled`
   :global(body) {
@@ -31,3 +32,5 @@ export const Root = ({
     {children}
   </use.root>
 );
+
+export default Root;
