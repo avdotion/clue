@@ -3,14 +3,36 @@ import styled, {use, css} from 'reshadow';
 
 export const defaultTextBoxStyle = css`
   |wrapper {
-    padding: var(--indent2) var(--indent5);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Roboto Mono', source-code-pro, Menlo, Monaco, Consolas,
+      'Courier New', monospace;
+  }
+
+  |label {
+    margin-left: 20px;
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+
+  |additionalLine {
+    line-height: 1.6em;
+    outline: none;
+    background: none;
+    border: 0;
+    display: flex;
+    align-items: center;
+    font-color: rgb(143, 143, 143);
+  }
+
+  |inputField {
+    padding: 7px 15px;
+    border: 1px solid black;
     border-radius: 5px;
-    background-color: var(--input-default-color);
     width: 100%;
     display: flex;
     overflow: hidden;
-    font-family: 'Roboto Mono', source-code-pro, Menlo, Monaco, Consolas,
-      'Courier New', monospace;
     font-weight: 500;
   }
 `;
@@ -33,8 +55,7 @@ export const InnerInput = React.forwardRef<HTMLInputElement, InnerInputProps>(({
     outline: none;
     background: none;
     border: 0;
-    color: var(--input-default-text-color);
-    align-items: center;
+    display: flex;
     width: 100%;
   }
 
@@ -57,11 +78,15 @@ export const InnerInput = React.forwardRef<HTMLInputElement, InnerInputProps>(({
 ));
 
 type InputProps = {
+  label: string,
+  additionalLine?: string,
   inputChangeAction: (value: string) => void,
   inputValue: string,
 };
 
 export const Input: React.FC<InputProps> = ({
+  label,
+  additionalLine,
   inputChangeAction,
   inputValue,
 }: InputProps) => {
@@ -70,14 +95,22 @@ export const Input: React.FC<InputProps> = ({
   return styled(
     defaultTextBoxStyle
   )(
-    <use.wrapper onClick={() => {
-      inputElement.current && inputElement.current.focus();
-    }}>
-      <InnerInput
-        onChange={inputChangeAction}
-        value={inputValue}
-        ref={inputElement}
-      />
+    <use.wrapper>
+      <use.label>
+        {label}
+      </use.label>
+      <use.inputField onClick={() => {
+        inputElement.current && inputElement.current.focus();
+      }}>
+        <use.additionalLine>
+          {additionalLine}
+        </use.additionalLine>
+        <InnerInput
+          onChange={inputChangeAction}
+          value={inputValue}
+          ref={inputElement}
+        />
+      </use.inputField>
     </use.wrapper>
   );
 };
