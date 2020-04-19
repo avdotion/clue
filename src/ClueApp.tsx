@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import styled, {use, css} from 'reshadow';
 
-import Input from '#/components/Pitaya/Input';
+import {Input} from '#/components/Pitaya/Input';
 
 export const ClueApp: React.FC = () => {
 
@@ -11,25 +11,17 @@ export const ClueApp: React.FC = () => {
     |block {
       width: 250px;
     }
-
-    |button {
-      width: 100px;
-      height: 30px;
-      background-color: red;
-    }
   `(
     <use.block>
       <Input
-        type={'password'}
-        label={'Here will be label'}
-        additionalLine={'smth'}
-        inputValue={text}
-        inputChangeAction={changeText}
-      >
-        <use.button>
-
-        </use.button>
-      </Input>
+      value=''
+      addictionLine=''
+      label='Input'
+      type='text'
+      autofocus={true}
+      button={<div></div>}
+      onChange={(value) => {}}
+      />
     </use.block>
   );
 };

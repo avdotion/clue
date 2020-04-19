@@ -1,136 +1,42 @@
 import React, {useRef} from 'react';
 import styled, {use, css} from 'reshadow';
 
-export const defaultTextBoxStyle = css`
-  |wrapper {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    font-family: 'Roboto Mono', source-code-pro, Menlo, Monaco, Consolas,
-      'Courier New', monospace;
-  }
-
+export const inputStyles = css`
   |label {
-    margin-left: 20px;
-    margin-bottom: 10px;
-    font-style: italic;
+    maggin-left: 10px;
   }
-
-  |inputField {
-    padding: 7px 15px;
-    border: 1px solid black;
-    border-radius: 5px;
-    width: 100%;
-    display: flex;
-    overflow: hidden;
-    font-weight: 500;
-    align-items: center;
-    flex-wrap: reverse;
-  }
-
-  |additionalLine {
-    line-height: 1.6em;
-    outline: none;
-    background: none;
-    border: 0;
-    display: flex;
-    align-items: center;
-    color: rgb(143, 143, 143);
-  }
-
 `;
 
-type InnerInputProps = {
-  /** Type of input **/
-  type?: string,
-  /** Callback after change **/
-  onChange: (value: string) => void,
-  /** Text in input **/
-  value: string,
-  /** Does use auto focus on input after click on border**/
-  autoFocus?: boolean,
-};
-
-export const InnerInput = React.forwardRef<HTMLInputElement, InnerInputProps>(({
-  type = 'text',
-  onChange,
-  value,
-  autoFocus,
-}, ref) => styled`
-  input {
-    line-height: 1.6em;
-    outline: none;
-    background: none;
-    border: 0;
-    display: flex;
-    width: 1px;
-    flex-grow: 2;
-  }
-  input:required {
-    box-shadow: none;
-  }
-  input:invalid {
-      box-shadow: none;
-  }
-`(
-  <input
-    type={type}
-    onChange={onChange && (e => onChange(e.target.value))}
-    ref={ref}
-    value={value}
-    spellCheck={false}
-    autoFocus={autoFocus}
-  />
-));
-
 type InputProps = {
-  /** Custom Button **/
-  children?: React.ReactNode,
-  /** Name of input  **/
+  value: string,
+  addictionLine?: string,
   label: string,
-  /** Type of input **/
-  type?: string,
-  /** Line before input**/
-  additionalLine?: string,
-  /** Callback after change **/
-  inputChangeAction: (value: string) => void,
-  /** Text in input **/
-  inputValue: string,
+  type: 'text' | 'password',
+  autofocus: boolean,
+  button: React.ReactNode,
+  onChange: (value: string) => void,
 };
 
-const Input: React.FC<InputProps> = ({
-  children,
+export const Input: React.FC<InputProps> = (
+  value,
+  addictionLine,
   label,
-  type='text',
-  additionalLine,
-  inputChangeAction,
-  inputValue,
-}: InputProps) => {
-  const inputElement = useRef<HTMLInputElement>(null);
+  type,
+  autofocus,
+  button,
+  onChange
+): InputProps => {
+  const inputRef = useRef<HTMLInputElement>(null);
 
   return styled(
-    defaultTextBoxStyle
-  )(
-    <use.wrapper>
+    inputStyles
+  )``(
+    <>
       <use.label>
-        {label}
+        <div>
+          {label}
+        </div>
       </use.label>
-      <use.inputField onClick={() => {
-        inputElement.current && inputElement.current.focus();
-      }}>
-        <use.additionalLine>
-          {additionalLine}
-        </use.additionalLine>
-        <InnerInput
-          type={type}
-          onChange={inputChangeAction}
-          value={inputValue}
-          ref={inputElement}
-        />
-        {children}
-      </use.inputField>
-    </use.wrapper>
+    </>
   );
 };
-
-export default Input;
