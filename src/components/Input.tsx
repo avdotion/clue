@@ -1,6 +1,8 @@
 import React, {useRef} from 'react';
 import styled, {use, css} from 'reshadow';
 
+import Text from 'Text';
+
 export const defaultTextBoxStyle = css`
   |wrapper {
     padding: var(--indent2) var(--indent5);
