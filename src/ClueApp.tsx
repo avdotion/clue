@@ -1,27 +1,40 @@
-import React, {useState, useEffect} from 'react';
-import styled, {use, css} from 'reshadow';
+import React, {useState} from 'react';
+import styled, {use} from 'reshadow';
 
-import {Input} from '#/components/Pitaya/Input';
+import Grid, {Column} from '#/components/Pitaya/Grid';
+import MasterPassword from '#/components/Pitaya/MasterPassword';
+import Salt from '#/components/Pitaya/Salt';
+import DomainName from '#/components/Pitaya/DomainName';
 
 export const ClueApp: React.FC = () => {
 
-   const [text, changeText] = useState('');
+  const [password, changePassword] = useState('');
+  const [salt, changeSalt] = useState('');
+  const [domainName, changeDomainName] = useState('');
 
   return styled`
     |block {
-      width: 250px;
+      width: 340px;
     }
   `(
     <use.block>
-      <Input
-      value=''
-      addictionLine=''
-      label='Input'
-      type='text'
-      autofocus={true}
-      button={<div></div>}
-      onChange={(value) => {}}
-      />
+      <Grid>
+        <Column>
+          <MasterPassword
+            value={password}
+            onChange={(value) => {changePassword(value);}}
+          />
+          <Salt
+            value={salt}
+            onChange={(value) => {changeSalt(value);}}
+          />
+          <DomainName
+            value={domainName}
+            onChange={(value) => {changeDomainName(value);}}
+            buttonOnClick={() => {console.log('CLICK!');}}
+          />
+        </Column>
+      </Grid>
     </use.block>
   );
 };

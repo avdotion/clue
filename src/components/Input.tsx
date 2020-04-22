@@ -1,8 +1,6 @@
 import React, {useRef} from 'react';
 import styled, {use, css} from 'reshadow';
 
-import Text from 'Text';
-
 export const defaultTextBoxStyle = css`
   |wrapper {
     padding: var(--indent2) var(--indent5);
@@ -45,7 +43,11 @@ export const InnerInput = React.forwardRef<HTMLInputElement, InnerInputProps>(({
   }
 
   input:invalid {
-      box-shadow: none;
+    box-shadow: none;
+  }
+
+  input:hover {
+    cursor: pointer;
   }
 `(
   <input
