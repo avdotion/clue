@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import styled, {use} from 'reshadow';
 
-import Grid, {Column} from '#/components/Pitaya/Grid';
-import MasterPassword from '#/components/Pitaya/MasterPassword';
-import Salt from '#/components/Pitaya/Salt';
-import DomainName from '#/components/Pitaya/DomainName';
+import Grid, {Column} from '#/pitaya/components/Grid';
+import MasterPassword from '#/pitaya/components/Inputs/MasterPassword';
+import Salt from '#/pitaya/components/Inputs/Salt';
+import DomainName from '#/pitaya/components/Inputs/DomainName';
 
 export const ClueApp: React.FC = () => {
 

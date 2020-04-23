@@ -20,11 +20,11 @@ type TextProps = {
   /** Inner text */
   children: React.ReactNode,
   /** Common preferences */
-  theme: Theme,
+  theme?: Theme,
   /** Font style */
-  fontStyle: 'normal' | 'italic',
+  fontStyle?: 'normal' | 'italic',
   /** Font color */
-  color: Color,
+  color?: Color,
 };
 
 export const Text = ({
@@ -33,30 +33,32 @@ export const Text = ({
   fontStyle = 'normal',
   color = DEFAULT_COLOR,
 }: TextProps) => styled`
-  |text {
-    font-family: 'Roboto Mono', monospace;
-    font-style: ${fontStyle};
-    color: ${transformColorToRGBA(color)}
-  }
+|text {
+  font-family: 'Roboto Mono', monospace;
+  font-style: ${fontStyle};
+  color: ${transformColorToRGBA(color)}
+}
 
-  |text[theme] {
-    &='heading' {
-      font-size: 24px;
-      font-weight: 500;
-    }
+|text[use|theme='heading'] {
+  font-size: 24px;
+  font-weight: 500;
+}
 
-    &='paragraph', &='caption' {
-      font-size: 14px;
-      font-weight: 400;
-    }
-  }
+|text[use|theme='paragraph'] {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+|text[ues|theme='caption'] {
+  font-size: 14px;
+  font-weight: 400;
+}
 `(
-  <use.text
-    as={mapThemeToDom(theme)}
-    {...use({theme})}
-  >
-    {children}
-  </use.text>
+<use.text
+  {...use({theme: theme})}
+>
+  {children}
+</use.text>
 );
 
 export default Text;
