@@ -71,6 +71,7 @@ export const Input: React.FC<InputProps> = ({
   button,
   onChange,
 }: InputProps) => {
+
   const inputElement = useRef<HTMLInputElement>(null);
 
   return styled(
@@ -116,7 +117,7 @@ export const Input: React.FC<InputProps> = ({
           ref={inputElement}
           autoFocus={autoFocus}
           spellCheck={false}
-          onChange={e => {onChange(e.target.value);}}
+          onChange={event => {onChange(event.target.value);}}
         />
         {button}
       </use.wrapper>

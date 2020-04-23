@@ -4,8 +4,11 @@ import Input from './Input';
 import MonkeyButton from './MonkeyButton';
 
 type SaltProps = {
+  /** Inner input value **/
   value?: string,
+  /** Is password hidden **/
   isTextHidden?: boolean,
+  /** Callback after input value has been changed **/
   onChange: (value: string) => void,
 }
 

@@ -5,8 +5,11 @@ import Input from './Input';
 import Text from './Text';
 
 type DomainNameProps = {
+  /** Inner input value **/
   value: string,
+  /** Callback after input value has been changed **/
   onChange: (value: string) => void,
+  /** Callback after button has been clicked**/
   buttonOnClick: () => void,
 };
 
