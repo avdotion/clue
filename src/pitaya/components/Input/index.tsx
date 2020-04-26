@@ -1,17 +1,50 @@
-import React, {useRef} from 'react';
+import React, {useState, useRef, useCallback} from 'react';
 import styled, {use, css} from 'reshadow';
 
 import Text from '../Text';
 import Grid, {Column} from '../Grid';
 
-export const inputStyles = css`
+type MonkeyButtonProps = {
+  /** Is password hidden? **/
+  hidden: boolean,
+  /** Callback after button has been clicked **/
+  onClick: (hidden: boolean) => void,
+};
 
+const MonkeyButton: React.FC<MonkeyButtonProps> = ({
+  hidden,
+  onClick,
+}: MonkeyButtonProps) => {
+  const memorizedOnClick = useCallback(
+    () => {onClick(!hidden);},
+    [hidden]
+  );
+
+  return styled`
+  |wrapper {
+    font-size: 22px;
+    user-select: none;
+  }
+
+  |wrapper:hover {
+    cursor: pointer;
+  }
+`(
+    <use.wrapper
+      onClick={memorizedOnClick}
+    >
+      {hidden? '🙈' : '🐵'}
+    </use.wrapper>
+  );
+};
+
+export const inputStyles = css`
   |wrapper {
     margin-top: 12px;
-    height: 42px;
+    height: 40px;
     border: 1px solid black;
     border-radius: 8px;
-    padding: 0 20px 0;
+    padding: 0 20px;
     display: flex;
     align-items: center;
     cursor: text;
@@ -28,14 +61,18 @@ export const inputStyles = css`
     font-weight: 500;
     font-size: 14px;
     line-height: 18px;
-  }
-
-  input:required {
     box-shadow: none;
   }
 
-  input:invalid {
-    box-shadow: none;
+  |button {
+    padding: 9px 20px;
+    border-radius: 6px;
+    background-color: #000000;
+    margin-left: 2px;
+  }
+
+  |button:hover {
+    cursor: pointer;
   }
 `;
 
@@ -43,33 +80,32 @@ type InputProps = {
   /** Input value **/
   value?: string,
   /** Line before input value **/
-  addictionLine?: string,
+  addiction?: string,
   /** label over input **/
   label: string,
   /** Input type **/
   type?: 'text' | 'password',
   /** Is autofocus enable? **/
   autoFocus?: boolean,
-  /** Rigth padding in wrapper for custom button **/
-  rightPadding?: string,
-  /** Custom button **/
-  button?: React.ReactNode,
   /** Callback after value change **/
   onChange: (value: string) => void,
+  /**  Callback after button have been clicked **/
+  buttonOnClick?: () => void,
 };
 
 export const Input: React.FC<InputProps> = ({
   value = '',
-  addictionLine,
+  addiction,
   label,
   type = 'text',
   autoFocus = false,
-  rightPadding = '20px',
-  button,
   onChange,
+  buttonOnClick,
 }: InputProps) => {
-
   const inputElement = useRef<HTMLInputElement>(null);
+
+  const [isTextHidden, setIsTextHidden] = 
+    useState<boolean>(type === 'password');
 
   return styled(
     inputStyles
@@ -81,7 +117,7 @@ export const Input: React.FC<InputProps> = ({
     }
 
     |wrapper {
-      padding-right: ${rightPadding};
+      padding-right: ${type === 'text' ? '4px' : '20px'};
     }
   `(
     <>
@@ -104,17 +140,30 @@ export const Input: React.FC<InputProps> = ({
         <Text
           color={[0, 0, 0, 0.4]}
         >
-          {addictionLine}
+          {addiction}
         </Text>
         <input
           value={value}
-          type={type}
+          type={isTextHidden ? 'password' : 'text'}
           ref={inputElement}
           autoFocus={autoFocus}
           spellCheck={false}
           onChange={event => {onChange(event.target.value);}}
         />
-        {button}
+        {type === 'text' ?
+          value === '' &&
+          <use.button>
+            <Text
+              color={[255, 255, 255, 1]}
+            >
+              PASTE
+            </Text>
+          </use.button> :
+          <MonkeyButton
+            hidden={isTextHidden}
+            onClick={(hidden) => {setIsTextHidden(hidden);}}
+          />
+        }
       </use.wrapper>
     </>
   );

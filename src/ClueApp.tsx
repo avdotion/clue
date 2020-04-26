@@ -2,9 +2,8 @@ import React, {useState} from 'react';
 import styled, {use} from 'reshadow';
 
 import Grid, {Column} from '#/pitaya/components/Grid';
-import MasterPassword from '#/pitaya/components/Inputs/MasterPassword';
-import Salt from '#/pitaya/components/Inputs/Salt';
-import DomainName from '#/pitaya/components/Inputs/DomainName';
+import Input from '#/pitaya/components/Input';
+
 
 export const ClueApp: React.FC = () => {
 
@@ -20,16 +19,22 @@ export const ClueApp: React.FC = () => {
     <use.block>
       <Grid>
         <Column>
-          <MasterPassword
+          <Input
             value={password}
+            label='Master Password'
+            type='password'
             onChange={(value) => {changePassword(value);}}
           />
-          <Salt
+          <Input
             value={salt}
+            label='Salt'
+            type='password'
             onChange={(value) => {changeSalt(value);}}
           />
-          <DomainName
+          <Input
             value={domainName}
+            label='URL'
+            addiction='https://'
             onChange={(value) => {changeDomainName(value);}}
             buttonOnClick={() => {console.log('CLICK!');}}
           />
