@@ -22,6 +22,7 @@ export const ClueApp: React.FC = () => {
           <Input
             value={password}
             label='Master Password'
+            autoFocus={true}
             type='password'
             onChange={(value) => {changePassword(value);}}
           />

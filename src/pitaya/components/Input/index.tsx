@@ -1,4 +1,9 @@
-import React, {useState, useRef, useCallback} from 'react';
+import React, {
+  useState, 
+  useEffect, 
+  useRef, 
+  useCallback,
+} from 'react';
 import styled, {use, css} from 'reshadow';
 
 import Text from '../Text';
@@ -48,6 +53,11 @@ export const inputStyles = css`
     display: flex;
     align-items: center;
     cursor: text;
+    transition: all 0.3s ease-in-out;
+  }
+
+  |wrapper[focus='true'] {
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
   }
 
   input {
@@ -98,10 +108,12 @@ export const Input: React.FC<InputProps> = ({
   addiction,
   label,
   type = 'text',
-  autoFocus = false,
+  autoFocus,
   onChange,
   buttonOnClick,
 }: InputProps) => {
+  const [focus, setFocus] = useState<boolean>(false);
+
   const inputElement = useRef<HTMLInputElement>(null);
 
   const [isTextHidden, setIsTextHidden] = 
@@ -134,9 +146,13 @@ export const Input: React.FC<InputProps> = ({
           </Text>
         </Column>
       </Grid>
-      <use.wrapper onClick={() => {
-        inputElement.current && inputElement.current.focus();
-      }}>
+      <use.wrapper
+        focus={focus.toString()}
+        onClick={(event: React.SyntheticEvent) => {
+          event.target === event.currentTarget &&
+          inputElement.current && inputElement.current.focus();
+        }
+      }>
         <Text
           color={[0, 0, 0, 0.4]}
         >
@@ -149,10 +165,14 @@ export const Input: React.FC<InputProps> = ({
           autoFocus={autoFocus}
           spellCheck={false}
           onChange={event => {onChange(event.target.value);}}
+          onFocus={() => {setFocus(true);}}
+          onBlur={() => {setFocus(false);}}
         />
         {type === 'text' ?
           value === '' &&
-          <use.button>
+          <use.button
+            onClick={buttonOnClick}
+          >
             <Text
               color={[255, 255, 255, 1]}
             >
@@ -161,7 +181,9 @@ export const Input: React.FC<InputProps> = ({
           </use.button> :
           <MonkeyButton
             hidden={isTextHidden}
-            onClick={(hidden) => {setIsTextHidden(hidden);}}
+            onClick={(hidden) => {
+              setIsTextHidden(hidden);
+            }}
           />
         }
       </use.wrapper>
