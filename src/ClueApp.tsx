@@ -30,18 +30,15 @@ export const ClueApp: React.FC = () => {
       font-size: 12px;
       background-color: var(--background-color);
     }
-
     |meta {
       text-align: center;
       color: var(--copyright-meta-text-color);
       margin: var(--indent5) 0;
     }
-
     |meta a {
       color: var(--copyright-meta-text-color);
       text-decoration: none;
     }
-
     |fullFrameLayout {
       min-height: 100vh;
       width: 100%;
@@ -49,25 +46,21 @@ export const ClueApp: React.FC = () => {
       align-items: center;
       justify-content: center;
     }
-
     |container {
       flex-wrap: wrap;
       width: 100%;
     }
-
     @media only screen and (min-width: 440px)  {
       |container {
         max-width: 340px;
       }
     }
-
     |mainframe {
       width: 100%;
       background-color: var(--mainframe-color);
       padding: var(--indent5);
       box-sizing: border-box;
     }
-
     @media only screen and (min-width: 440px)  {
       |mainframe {
         border-radius: 4px;

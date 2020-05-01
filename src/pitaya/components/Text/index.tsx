@@ -6,13 +6,6 @@ const DEFAULT_COLOR: Color = [0, 0, 0, 1];
 
 type Theme = 'heading' | 'paragraph' | 'caption';
 
-const themeDomMap = {
-  heading: 'h1',
-  paragraph: 'p',
-  caption: 'span',
-};
-
-const mapThemeToDom = (theme: Theme) => themeDomMap[theme];
 const transformColorToRGBA = (color: Color) =>
   `rgba(${color.join(',')})`;
 
@@ -20,11 +13,11 @@ type TextProps = {
   /** Inner text */
   children: React.ReactNode,
   /** Common preferences */
-  theme: Theme,
+  theme?: Theme,
   /** Font style */
-  fontStyle: 'normal' | 'italic',
+  fontStyle?: 'normal' | 'italic',
   /** Font color */
-  color: Color,
+  color?: Color,
 };
 
 export const Text = ({
@@ -51,12 +44,35 @@ export const Text = ({
     }
   }
 `(
-  <use.text
-    as={mapThemeToDom(theme)}
-    {...use({theme})}
-  >
-    {children}
-  </use.text>
+  <React.Fragment>
+    {
+      theme === 'heading' &&
+        <use.text
+          as='h1'
+          {...use({theme})}
+        >
+          {children}
+        </use.text>
+    }
+    {
+      theme === 'paragraph' &&
+        <use.text
+          as='p'
+          {...use({theme})}
+        >
+          {children}
+        </use.text>
+    }
+    {
+      theme === 'caption' &&
+        <use.text
+          as='span'
+          {...use({theme})}
+        >
+          {children}
+        </use.text>
+    }
+  </React.Fragment>
 );
 
 export default Text;
