@@ -1,28 +1,30 @@
 import React from 'react';
 import styled, {use} from 'reshadow';
 
-const DEFAULT_COLUMN_SIZE = 1;
+const DEFAULT_CELL_SIZE = 1;
 
 type GridProps = {
-  /** Columns */
-  children: React.ReactElement<ColumnProps> | React.ReactElement<ColumnProps>[],
-  /** Gap between columns and rows */
+  /** Cells */
+  children: React.ReactElement<CellProps> | React.ReactElement<CellProps>[],
+  /** Gap between cells and rows */
   gap?: string,
-  /** Number of columns in a single row */
+  /** Number of cells in a single row */
   size?: number,
   /** Wrap to next line */
   wrap?: boolean,
+  /** Customization */
+  styles?: any,
 };
 
-const getColumnSize = (column: React.ReactElement<ColumnProps>) =>
-  column.props.size || DEFAULT_COLUMN_SIZE;
+const getCellSize = (cell: React.ReactElement<CellProps>) =>
+  cell.props.size || DEFAULT_CELL_SIZE;
 
-const getColumnContent = (column: React.ReactElement<ColumnProps>) =>
-  column.props.children;
+const getCellContent = (cell: React.ReactElement<CellProps>) =>
+  cell.props.children;
 
-const getSumOfColumnsSizes = (columns: React.ReactElement<ColumnProps>[]) =>
-  columns
-    .map(getColumnSize)
+const getSumOfCellsSizes = (cells: React.ReactElement<CellProps>[]) =>
+  cells
+    .map(getCellSize)
     .reduce((acc, cur) => acc + cur, 0);
 
 const Grid = ({
@@ -30,70 +32,71 @@ const Grid = ({
   gap = '0',
   size,
   wrap = false,
+  styles = {},
 }: GridProps) => {
   const childrenArray = React.Children.toArray(children)
     .filter(React.isValidElement);
-  const columns: React.ReactElement<ColumnProps>[] = (childrenArray as any);
+  const cells: React.ReactElement<CellProps>[] = (childrenArray as any);
 
   const gridSize = size === undefined
-    ? getSumOfColumnsSizes(columns)
+    ? getSumOfCellsSizes(cells)
     : size;
 
   type Reduce = {
-    columns: React.ReactElement<LocatedColumnProps>[],
+    cells: React.ReactElement<LocatedCellProps>[],
     skipNext: boolean,
-    columnPointer: number,
+    cellPointer: number,
     rowPointer: number,
   };
 
-  const {columns: reducedColumns} = columns
-    .reduce<Reduce>((acc, column, index) => {
+  const {cells: reducedCells} = cells
+    .reduce<Reduce>((acc, cell, index) => {
       if (acc.skipNext) {
         return acc;
       }
-      const columnSize = getColumnSize(column);
-      const columnContent = getColumnContent(column);
+      const cellSize = getCellSize(cell);
+      const cellContent = getCellContent(cell);
 
-      // Skip columns which does not fit in a grid
-      if (columnSize > gridSize) {
+      // Skip cells which does not fit in a grid
+      if (cellSize > gridSize) {
         acc.skipNext = true;
         return acc;
       }
 
       // Wrap if enabled, skip if disabled
-      if (acc.columnPointer + columnSize > gridSize + 1) {
+      if (acc.cellPointer + cellSize > gridSize + 1) {
         if (!wrap) {
-          // Stop skipping wide columns in favour of narrow ones
+          // Stop skipping wide cells in favour of narrow ones
           acc.skipNext = true;
           return acc;
         }
         acc.rowPointer += 1;
-        acc.columnPointer = 1;
+        acc.cellPointer = 1;
       }
 
-      const locatedColumn = (
-        <LocatedColumn
-          columnProp={[acc.columnPointer, acc.columnPointer + columnSize]}
+      const locatedCell = (
+        <LocatedCell
+          cellProp={[acc.cellPointer, acc.cellPointer + cellSize]}
           rowProp={[acc.rowPointer, acc.rowPointer + 1]}
           key={index}
         >
-          {columnContent}
-        </LocatedColumn>
+          {cellContent}
+        </LocatedCell>
       );
 
-      acc.columns.push(locatedColumn);
-      acc.columnPointer += columnSize;
+      acc.cells.push(locatedCell);
+      acc.cellPointer += cellSize;
 
       return acc;
     }, {
-      columns: [],
+      cells: [],
       skipNext: false,
       // In display: grid terms everything starts from 1
-      columnPointer: 1,
+      cellPointer: 1,
       rowPointer: 1,
     });
 
-  return styled`
+  return styled(styles)`
     |grid {
       width: 100%;
       display: grid;
@@ -101,52 +104,52 @@ const Grid = ({
       grid-template-columns: repeat(${gridSize}, 1fr);
     }
   `(
-    <use.grid>
-      {reducedColumns}
+    <use.grid as="grid">
+      {reducedCells}
     </use.grid>
   );
 };
 
-type ColumnProps = {
+type CellProps = {
   /** Inner content */
   children: React.ReactNode,
   /** Number of horizontal cells in grid */
   size?: number,
 };
 
-export const Column = ({
+export const Cell = ({
   children,
-  size = DEFAULT_COLUMN_SIZE,
-}: ColumnProps) => (<div />);
+  size = DEFAULT_CELL_SIZE,
+}: CellProps) => (<div />);
 
-type LocatedColumnProps = {
+type LocatedCellProps = {
   /** Inner content */
   children: React.ReactNode,
-  /** Column indexes */
-  columnProp: [number, number],
+  /** Cell indexes */
+  cellProp: [number, number],
   /** Row indexes */
   rowProp: [number, number],
 };
 
-const LocatedColumn = ({
+const LocatedCell = ({
   children,
-  columnProp,
+  cellProp,
   rowProp,
-}: LocatedColumnProps) => {
-  const [columnStart, columnEnd] = columnProp;
+}: LocatedCellProps) => {
+  const [cellStart, cellEnd] = cellProp;
   const [rowStart, rowEnd] = rowProp;
 
   return styled`
-    |column {
-      grid-column-start: ${columnStart};
-      grid-column-end: ${columnEnd};
+    |cell {
+      grid-cell-start: ${cellStart};
+      grid-cell-end: ${cellEnd};
       grid-row-start: ${rowStart};
       grid-row-end: ${rowEnd};
     }
   `(
-    <use.column>
+    <use.cell as="cell">
       {children}
-    </use.column>
+    </use.cell>
   );
 };
 
