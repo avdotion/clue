@@ -45,32 +45,29 @@ export const Text = ({
   }
 `(
   <React.Fragment>
-    {
-      theme === 'heading' &&
-        <use.text
-          as="h1"
-          {...use({theme})}
-        >
-          {children}
-        </use.text>
+    {theme === 'heading' &&
+      <use.text
+        as="h1"
+        {...use({theme})}
+      >
+        {children}
+      </use.text>
     }
-    {
-      theme === 'paragraph' &&
-        <use.text
-          as="p"
-          {...use({theme})}
-        >
-          {children}
-        </use.text>
+    {theme === 'paragraph' &&
+      <use.text
+        as="p"
+        {...use({theme})}
+      >
+        {children}
+      </use.text>
     }
-    {
-      theme === 'caption' &&
-        <use.text
-          as="span"
-          {...use({theme})}
-        >
-          {children}
-        </use.text>
+    {theme === 'caption' &&
+      <use.text
+        as="span"
+        {...use({theme})}
+      >
+        {children}
+      </use.text>
     }
   </React.Fragment>
 );
