@@ -1,9 +1,6 @@
 import React from 'react';
 import styled, {use} from 'reshadow';
-
-const colorPalette = {
-  white: [255, 255, 255, 1],
-};
+import {ink} from '#/pitaya/helpers/units';
 
 type RootProps = {
   /** Root content */
@@ -17,10 +14,10 @@ const Root = ({
     font-family: 'Roboto Mono', monospace;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: ${colorPalette.white};
   }
 
   |root {
+    background-color: ${ink({type: 'RGBA', props: [255, 255, 255, 1]})};
     min-height: 100vh;
     width: 100%;
     display: flex;
@@ -28,7 +25,7 @@ const Root = ({
     justify-content: center;
   }
 `(
-  <use.root>
+  <use.root as="main">
     {children}
   </use.root>
 );
