@@ -48,7 +48,7 @@ export const Text = ({
     {
       theme === 'heading' &&
         <use.text
-          as='h1'
+          as="h1"
           {...use({theme})}
         >
           {children}
@@ -57,7 +57,7 @@ export const Text = ({
     {
       theme === 'paragraph' &&
         <use.text
-          as='p'
+          as="p"
           {...use({theme})}
         >
           {children}
@@ -66,7 +66,7 @@ export const Text = ({
     {
       theme === 'caption' &&
         <use.text
-          as='span'
+          as="span"
           {...use({theme})}
         >
           {children}
