@@ -94,7 +94,8 @@
     "test:eslint": "./node_modules/.bin/eslint --ext .jsx,.js,.ts,.tsx src/ --color --cache",
     "test:typescript": "./node_modules/.bin/tsc -p .",
     "predeploy": "npm run build",
-    "deploy": "./node_modules/.bin/gh-pages -d build"
+    "deploy": "./node_modules/.bin/gh-pages -d build",
+    "clean": "rm -rf node_modules && rm -rf build && rm .eslintcache && rm package-lock.json"
   },
   "eslintConfig": {
     "extends": [
