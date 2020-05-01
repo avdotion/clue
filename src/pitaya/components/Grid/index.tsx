@@ -104,7 +104,7 @@ const Grid = ({
       grid-template-columns: repeat(${gridSize}, 1fr);
     }
   `(
-    <use.grid as="grid">
+    <use.grid as="section">
       {reducedCells}
     </use.grid>
   );
@@ -141,13 +141,13 @@ const LocatedCell = ({
 
   return styled`
     |cell {
-      grid-cell-start: ${cellStart};
-      grid-cell-end: ${cellEnd};
+      grid-column-start: ${cellStart};
+      grid-column-end: ${cellEnd};
       grid-row-start: ${rowStart};
       grid-row-end: ${rowEnd};
     }
   `(
-    <use.cell as="cell">
+    <use.cell>
       {children}
     </use.cell>
   );

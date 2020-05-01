@@ -7,7 +7,7 @@ import {css} from '#/pitaya/helpers/reshadow';
 const ROOT_GAP = space(2);
 
 const contentStyles = css(`
-  grid {
+  section {
     max-width: ${space(32)};
     padding: ${space(4)};
   }
