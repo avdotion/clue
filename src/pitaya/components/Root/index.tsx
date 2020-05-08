@@ -15,7 +15,12 @@ const Root = ({
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-
+  
+  :global(button) {
+    border: none; 
+    outline: none;
+  }
+  
   |root {
     background-color: ${ink({type: 'RGBA', props: [255, 255, 255, 1]})};
     min-height: 100vh;
@@ -24,6 +29,7 @@ const Root = ({
     align-items: center;
     justify-content: center;
   }
+
 `(
   <use.root as="main">
     {children}

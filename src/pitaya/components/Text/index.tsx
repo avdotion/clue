@@ -32,7 +32,7 @@ export const Text = ({
     color: ${transformColorToRGBA(color)}
   }
 
-  |text[theme] {
+  |text[use|theme] {
     &='heading' {
       font-size: 24px;
       font-weight: 500;
@@ -48,7 +48,7 @@ export const Text = ({
     {theme === 'heading' &&
       <use.text
         as="h1"
-        {...use({theme})}
+        {...use({theme: theme})}
       >
         {children}
       </use.text>
@@ -56,7 +56,7 @@ export const Text = ({
     {theme === 'paragraph' &&
       <use.text
         as="p"
-        {...use({theme})}
+        {...use({theme: theme})}
       >
         {children}
       </use.text>
@@ -64,7 +64,7 @@ export const Text = ({
     {theme === 'caption' &&
       <use.text
         as="span"
-        {...use({theme})}
+        {...use({theme: theme})}
       >
         {children}
       </use.text>
