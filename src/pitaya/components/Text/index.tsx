@@ -44,7 +44,7 @@ export const Text = ({
     }
   }
 `(
-  <React.Fragment>
+  <div>
     {theme === 'heading' &&
       <use.text
         as="h1"
@@ -69,7 +69,7 @@ export const Text = ({
         {children}
       </use.text>
     }
-  </React.Fragment>
+  </div>
 );
 
 export default Text;

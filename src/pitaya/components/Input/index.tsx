@@ -4,6 +4,7 @@ import React, {
   useCallback,
 } from 'react';
 import styled, {use, css} from 'reshadow';
+import {ink} from '#/pitaya/helpers/units'; 
 
 import Text from '../Text';
 import Grid, {Cell} from '../Grid';
@@ -19,34 +20,33 @@ const PasswordButton: React.FC<PasswordButtonProps> = ({
   hidden,
   onClick,
 }: PasswordButtonProps) => {
-  const memorizedOnClick = useCallback(
+  const memoOnClick = useCallback(
     () => {onClick(!hidden);},
     [hidden]
   );
 
   return styled`
-  |wrapper {
-    font-size: 22px;
-    user-select: none;
-  }
+    |wrapper {
+      font-size: 22px;
+      user-select: none;
+      background-color: rgba(255, 255, 255, 1);
+    }
 
-  |wrapper:hover {
-    cursor: pointer;
-  }
-`(
-    <use.wrapper
-      onClick={memorizedOnClick}
-    >
-      {hidden? '🙈' : '🐵'}
-    </use.wrapper>
-  );
+    |wrapper:hover {
+      cursor: pointer;
+    }
+  `(
+      <use.wrapper onClick={memoOnClick}>
+        {hidden? '🙈' : '🐵'}
+      </use.wrapper>
+    );
 };
 
 export const inputStyles = css`
   |wrapper {
     margin-top: 12px;
     height: 40px;
-    border: 1px solid black;
+    border: 1px solid rgba(0, 0, 0, 1);
     border-radius: 8px;
     padding: 0 20px;
     display: flex;
@@ -55,7 +55,7 @@ export const inputStyles = css`
     transition: all 0.3s ease-in-out;
   }
 
-  |wrapper[focus='true'] {
+  |wrapper[shadow='true'] {
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
   }
 
@@ -74,7 +74,7 @@ export const inputStyles = css`
   button {
     padding: 8px 20px;
     border-radius: 6px;
-    background-color: #000000;
+    background-color: rgba(0, 0, 0, 1);
     margin-right: -15px;
   }
 
@@ -109,46 +109,91 @@ export const Input: React.FC<InputProps> = ({
   onChange,
   buttonOnClick,
 }: InputProps) => {
-  const [focus, setFocus] = useState<boolean>(false);
-
-  const inputElement = useRef<HTMLInputElement>(null);
+  const [shadow, setShadow] = useState<boolean>(false);
 
   const [isTextHidden, setIsTextHidden] = 
     useState<boolean>(type === 'password');
 
-  const memorizedOnChange = (
+  const inputElement = useRef<HTMLInputElement>(null);
+
+  const memoOnChange = useCallback(
     (event: React.FormEvent<HTMLInputElement>) => {
       onChange(event.currentTarget.value);
-    }
+    }, 
+    []
+  );
+
+  const memoSetShadow = useCallback(
+    () => {setShadow(!shadow);},
+    [shadow]
+  );
+
+  const memoSetIsTextHidden = useCallback(
+    () => {setIsTextHidden(!isTextHidden);},
+    [isTextHidden]
+  );
+
+  const memoSetFocus = useCallback(
+    (event: React.SyntheticEvent) => {
+      event.target === event.currentTarget &&
+      inputElement.current && inputElement.current.focus();
+    },
+    []
   );
 
   return styled(
     inputStyles
   )`
-    |block {
-      height: 16px;
-      width: 100px;
-      background-color: red;
+    |wrapper {
+      margin-top: 12px;
+      height: 40px;
+      border: 1px solid rgba(0, 0, 0, 1);
+      border-radius: 8px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      cursor: text;
+      transition: all 0.3s ease-in-out;
+    }
+
+    |wrapper[shadow='true'] {
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    input {
+      outline: none;
+      background: none;
+      border: 0;
+      width: 100%;
+      min-width: 50%;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 18px;
+      box-shadow: none;
+    }
+
+    button {
+      padding: 8px 20px;
+      border-radius: 6px;
+      background-color: rgba(0, 0, 0, 1);
+      margin-right: -15px;
+    }
+
+    button:hover {
+      cursor: pointer;
     }
   `(
     <>
       <Grid>
         <Cell>
-          <Text
-            fontStyle="italic"
-          >
+          <Text fontStyle="italic">
             {label}
           </Text>
           <use.wrapper
-            focus={focus.toString()}
-            onClick={(event: React.SyntheticEvent) => {
-              event.target === event.currentTarget &&
-              inputElement.current && inputElement.current.focus();
-            }
-          }>
-            <Text
-              color={[0, 0, 0, 0.4]}
-              >
+            shadow={shadow.toString()}
+            onClick={memoSetFocus}
+          >
+            <Text color={[0, 0, 0, 0.4]}>
               {addiction}
             </Text>
             <input
@@ -157,26 +202,20 @@ export const Input: React.FC<InputProps> = ({
               ref={inputElement}
               autoFocus={autoFocus}
               spellCheck={false}
-              onChange={memorizedOnChange}
-              onFocus={() => {setFocus(true);}}
-              onBlur={() => {setFocus(false);}}
+              onChange={memoOnChange}
+              onFocus={memoSetShadow}
+              onBlur={memoSetShadow}
               />
             {type === 'text' ?
               value === '' &&
-              <button
-              onClick={buttonOnClick}
-              >
-                <Text
-                  color={[255, 255, 255, 1]}
-                  >
+              <button onClick={() => buttonOnClick}>
+                <Text color={[255, 255, 255, 1]}>
                   PASTE
                 </Text>
               </button> :
               <PasswordButton
-              hidden={isTextHidden}
-              onClick={(hidden) => {
-                setIsTextHidden(hidden);
-              }}
+                hidden={isTextHidden}
+                onClick={memoSetIsTextHidden}
               />
             }
           </use.wrapper>
