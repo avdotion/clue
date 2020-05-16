@@ -42,47 +42,6 @@ const PasswordButton: React.FC<PasswordButtonProps> = ({
     );
 };
 
-export const inputStyles = css`
-  |wrapper {
-    margin-top: 12px;
-    height: 40px;
-    border: 1px solid rgba(0, 0, 0, 1);
-    border-radius: 8px;
-    padding: 0 20px;
-    display: flex;
-    align-items: center;
-    cursor: text;
-    transition: all 0.3s ease-in-out;
-  }
-
-  |wrapper[shadow='true'] {
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-  }
-
-  input {
-    outline: none;
-    background: none;
-    border: 0;
-    width: 100%;
-    min-width: 50%;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 18px;
-    box-shadow: none;
-  }
-
-  button {
-    padding: 8px 20px;
-    border-radius: 6px;
-    background-color: rgba(0, 0, 0, 1);
-    margin-right: -15px;
-  }
-
-  button:hover {
-    cursor: pointer;
-  }
-`;
-
 type InputProps = {
   /** Input value **/
   value?: string,
@@ -141,9 +100,7 @@ export const Input: React.FC<InputProps> = ({
     []
   );
 
-  return styled(
-    inputStyles
-  )`
+  return styled`
     |wrapper {
       margin-top: 12px;
       height: 40px;
@@ -184,8 +141,7 @@ export const Input: React.FC<InputProps> = ({
     }
   `(
     <>
-      <Grid>
-        <Cell>
+        
           <Text fontStyle="italic">
             {label}
           </Text>
@@ -219,8 +175,7 @@ export const Input: React.FC<InputProps> = ({
               />
             }
           </use.wrapper>
-        </Cell>
-      </Grid>
+        
     </>
   );
 };

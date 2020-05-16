@@ -4,6 +4,8 @@ import Grid, {Cell} from '#/pitaya/components/Grid';
 import {space} from '#/pitaya/helpers/units';
 import {css} from '#/pitaya/helpers/reshadow';
 
+import Input from '#/pitaya/components/Input';
+
 const ROOT_GAP = space(2);
 
 const contentStyles = css(`
@@ -17,7 +19,10 @@ const View = () => (
   <Root>
     <Grid gap={ROOT_GAP} size={1} styles={contentStyles} wrap>
       <Cell>
-        content
+        <Input
+          label="url"
+          onChange={(value) => {}}
+        />
       </Cell>
       <Cell>
         content
