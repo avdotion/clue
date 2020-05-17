@@ -3,11 +3,9 @@ import React, {
   useRef, 
   useCallback,
 } from 'react';
-import styled, {use, css} from 'reshadow';
-import {ink} from '#/pitaya/helpers/units'; 
+import styled, {use} from 'reshadow';
 
 import Text from '../Text';
-import Grid, {Cell} from '../Grid';
 
 type PasswordButtonProps = {
   /** Is password hidden? **/
@@ -22,7 +20,7 @@ const PasswordButton: React.FC<PasswordButtonProps> = ({
 }: PasswordButtonProps) => {
   const memoOnClick = useCallback(
     () => {onClick(!hidden);},
-    [hidden]
+    [hidden, onClick]
   );
 
   return styled`
@@ -75,24 +73,24 @@ export const Input: React.FC<InputProps> = ({
 
   const inputElement = useRef<HTMLInputElement>(null);
 
-  const memoOnChange = useCallback(
+  const onChangeHandler = useCallback(
     (event: React.FormEvent<HTMLInputElement>) => {
       onChange(event.currentTarget.value);
     }, 
-    []
+    [onChange]
   );
 
-  const memoSetShadow = useCallback(
+  const setShadowHandler = useCallback(
     () => {setShadow(!shadow);},
     [shadow]
   );
 
-  const memoSetIsTextHidden = useCallback(
+  const setIsTextHiddenHandler = useCallback(
     () => {setIsTextHidden(!isTextHidden);},
     [isTextHidden]
   );
 
-  const memoSetFocus = useCallback(
+  const setFocusHandler = useCallback(
     (event: React.SyntheticEvent) => {
       event.target === event.currentTarget &&
       inputElement.current && inputElement.current.focus();
@@ -141,41 +139,39 @@ export const Input: React.FC<InputProps> = ({
     }
   `(
     <>
-        
-          <Text fontStyle="italic">
-            {label}
-          </Text>
-          <use.wrapper
-            shadow={shadow.toString()}
-            onClick={memoSetFocus}
-          >
-            <Text color={[0, 0, 0, 0.4]}>
-              {addiction}
+      <Text fontStyle="italic">
+        {label}
+      </Text>
+      <use.wrapper
+        shadow={shadow.toString()}
+        onClick={setFocusHandler}
+      >
+        <Text color={[0, 0, 0, 0.4]}>
+          {addiction}
+        </Text>
+        <input
+          value={value}
+          type={isTextHidden ? 'password' : 'text'}
+          ref={inputElement}
+          autoFocus={autoFocus}
+          spellCheck={false}
+          onChange={onChangeHandler}
+          onFocus={setShadowHandler}
+          onBlur={setShadowHandler}
+          />
+        {type === 'text' ?
+          value === '' &&
+          <button onClick={() => buttonOnClick}>
+            <Text color={[255, 255, 255, 1]}>
+              PASTE
             </Text>
-            <input
-              value={value}
-              type={isTextHidden ? 'password' : 'text'}
-              ref={inputElement}
-              autoFocus={autoFocus}
-              spellCheck={false}
-              onChange={memoOnChange}
-              onFocus={memoSetShadow}
-              onBlur={memoSetShadow}
-              />
-            {type === 'text' ?
-              value === '' &&
-              <button onClick={() => buttonOnClick}>
-                <Text color={[255, 255, 255, 1]}>
-                  PASTE
-                </Text>
-              </button> :
-              <PasswordButton
-                hidden={isTextHidden}
-                onClick={memoSetIsTextHidden}
-              />
-            }
-          </use.wrapper>
-        
+          </button> :
+          <PasswordButton
+            hidden={isTextHidden}
+            onClick={setIsTextHiddenHandler}
+          />
+        }
+      </use.wrapper> 
     </>
   );
 };
