@@ -22,6 +22,7 @@ const View = () => (
         <Input
           label="url"
           onChange={(value) => {}}
+          type="password"
         />
       </Cell>
       <Cell>

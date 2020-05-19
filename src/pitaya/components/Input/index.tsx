@@ -18,25 +18,23 @@ const PasswordButton: React.FC<PasswordButtonProps> = ({
   hidden,
   onClick,
 }: PasswordButtonProps) => {
-  const memoOnClick = useCallback(
+  const triggerVisibilityHandler = useCallback(
     () => {onClick(!hidden);},
     [hidden, onClick]
   );
 
   return styled`
-    |wrapper {
+    button {
       font-size: 22px;
       user-select: none;
       background-color: rgba(255, 255, 255, 1);
-    }
-
-    |wrapper:hover {
       cursor: pointer;
+      padding-top: 4px;
     }
   `(
-      <use.wrapper onClick={memoOnClick}>
+      <button onClick={triggerVisibilityHandler}>
         {hidden? '🙈' : '🐵'}
-      </use.wrapper>
+      </button>
     );
 };
 
@@ -44,7 +42,7 @@ type InputProps = {
   /** Input value **/
   value?: string,
   /** Line before input value **/
-  addiction?: string,
+  prefix?: string,
   /** label over input **/
   label: string,
   /** Input type **/
@@ -59,7 +57,7 @@ type InputProps = {
 
 export const Input: React.FC<InputProps> = ({
   value = '',
-  addiction,
+  prefix,
   label,
   type = 'text',
   autoFocus,
@@ -147,7 +145,7 @@ export const Input: React.FC<InputProps> = ({
         onClick={setFocusHandler}
       >
         <Text color={[0, 0, 0, 0.4]}>
-          {addiction}
+          {prefix}
         </Text>
         <input
           value={value}

@@ -1,0 +1,13 @@
+button {
+  padding: 0;
+  border: none; 
+  outline: none;
+}
+
+button:active, button:focus {
+  outline: none !important;
+}
+
+button::-moz-focus-inner {
+  border: 0 !important;
+}

@@ -16,11 +16,6 @@ const Root = ({
     -moz-osx-font-smoothing: grayscale;
   }
   
-  :global(button) {
-    border: none; 
-    outline: none;
-  }
-  
   |root {
     background-color: ${ink({type: 'RGBA', props: [255, 255, 255, 1]})};
     min-height: 100vh;
