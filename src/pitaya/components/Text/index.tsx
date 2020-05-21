@@ -6,6 +6,14 @@ const DEFAULT_COLOR: Color = [0, 0, 0, 1];
 
 type Theme = 'heading' | 'paragraph' | 'caption';
 
+const themeDomMap = {
+  heading: 'h1',
+  paragraph: 'p',
+  caption: 'span',
+};
+
+const mapThemeToDom = (theme: Theme) => themeDomMap[theme];
+
 const transformColorToRGBA = (color: Color) =>
   `rgba(${color.join(',')})`;
 
@@ -44,32 +52,12 @@ export const Text = ({
     }
   }
 `(
-  <div>
-    {theme === 'heading' &&
-      <use.text
-        as="h1"
-        {...use({theme: theme})}
-      >
-        {children}
-      </use.text>
-    }
-    {theme === 'paragraph' &&
-      <use.text
-        as="p"
-        {...use({theme: theme})}
-      >
-        {children}
-      </use.text>
-    }
-    {theme === 'caption' &&
-      <use.text
-        as="span"
-        {...use({theme: theme})}
-      >
-        {children}
-      </use.text>
-    }
-  </div>
+  <use.text
+    {...use({theme: theme})}
+    {...{as: mapThemeToDom(theme)}}
+  >
+    {children}
+  </use.text>
 );
 
 export default Text;
