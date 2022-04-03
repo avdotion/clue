@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.js": "/clue/static/js/main.857f84ba.chunk.js",
+    "main.js.map": "/clue/static/js/main.857f84ba.chunk.js.map",
+    "runtime-main.js": "/clue/static/js/runtime-main.a9247624.js",
+    "runtime-main.js.map": "/clue/static/js/runtime-main.a9247624.js.map",
+    "static/css/2.764ccc25.chunk.css": "/clue/static/css/2.764ccc25.chunk.css",
+    "static/js/2.e7ac8628.chunk.js": "/clue/static/js/2.e7ac8628.chunk.js",
+    "static/js/2.e7ac8628.chunk.js.map": "/clue/static/js/2.e7ac8628.chunk.js.map",
+    "index.html": "/clue/index.html",
+    "precache-manifest.5427bc21c874e441d2d9ab557936c103.js": "/clue/precache-manifest.5427bc21c874e441d2d9ab557936c103.js",
+    "service-worker.js": "/clue/service-worker.js",
+    "static/css/2.764ccc25.chunk.css.map": "/clue/static/css/2.764ccc25.chunk.css.map",
+    "static/js/2.e7ac8628.chunk.js.LICENSE.txt": "/clue/static/js/2.e7ac8628.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a9247624.js",
+    "static/css/2.764ccc25.chunk.css",
+    "static/js/2.e7ac8628.chunk.js",
+    "static/js/main.857f84ba.chunk.js"
+  ]
+}
